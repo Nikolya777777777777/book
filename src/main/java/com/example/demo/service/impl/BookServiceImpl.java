@@ -1,15 +1,16 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.model.Book;
+import com.example.demo.repository.BookRepository;
 import com.example.demo.service.BookService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import java.util.List;
 
-@Component
+@Service
+@RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
-    @Autowired
-    private com.example.demo2.repository.BookRepository bookRepository;
+    private final BookRepository bookRepository;
 
     @Override
     public Book save(Book book) {
@@ -17,7 +18,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List findAll() {
+    public List<Book> findAll() {
         return bookRepository.findAll();
     }
 }
