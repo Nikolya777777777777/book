@@ -1,8 +1,6 @@
 package com.example.demo;
 
-import com.example.demo.model.Book;
 import com.example.demo.service.BookService;
-import java.math.BigDecimal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -23,16 +21,7 @@ public class DemoApplication {
         return new CommandLineRunner() {
             @Override
             public void run(String... args) throws Exception {
-                Book book = new Book();
-                book.setAuthor("Shevchenko");
-                book.setPrice(BigDecimal.valueOf(100));
-                book.setDescription("fnhfb");
-                book.setIsbn("fjbff");
-                book.setTitle("fkjbfhjfb");
-                book.setCoverImage("fkjbfhj");
 
-                bookService.save(book);
-                System.out.println(bookService.findAll());
             }
         };
     }
