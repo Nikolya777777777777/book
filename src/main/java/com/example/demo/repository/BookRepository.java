@@ -1,6 +1,5 @@
 package com.example.demo.repository;
 
-import com.example.demo.dto.BookDto;
 import com.example.demo.model.Book;
 import java.util.List;
 
@@ -9,5 +8,5 @@ public interface BookRepository {
 
     List<Book> getAll();
 
-    BookDto getBookById(Long id);
+    Book getBookById(Long id);
 }

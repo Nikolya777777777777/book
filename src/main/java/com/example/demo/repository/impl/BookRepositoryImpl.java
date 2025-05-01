@@ -1,6 +1,5 @@
 package com.example.demo.repository.impl;
 
-import com.example.demo.dto.BookDto;
 import com.example.demo.exception.DataProcessingException;
 import com.example.demo.model.Book;
 import com.example.demo.repository.BookRepository;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 @RequiredArgsConstructor
 public class BookRepositoryImpl implements BookRepository {
+
     private final EntityManagerFactory entityManagerFactory;
 
     @Override
@@ -49,9 +49,9 @@ public class BookRepositoryImpl implements BookRepository {
     }
 
     @Override
-    public BookDto getBookById(Long id) {
+    public Book getBookById(Long id) {
         try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
-            return entityManager.createQuery("from Book where id = :id", BookDto.class)
+            return entityManager.createQuery("from Book where id = :id", Book.class)
                     .setParameter("id", id)
                     .getSingleResult();
         } catch (RuntimeException e) {
