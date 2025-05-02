@@ -104,11 +104,14 @@
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<version>3.3.0</version>
 				<configuration>
-					<excludes>
-						<exclude>target/generated-sources</exclude>
-					</excludes>
+					<configLocation>checkstyle.xml</configLocation>
+					<sourceDirectories>
+						<sourceDirectory>src/main/java/com/example/demo</sourceDirectory>
+					</sourceDirectories>
+					<consoleOutput>true</consoleOutput>
 				</configuration>
 			</plugin>
+
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
