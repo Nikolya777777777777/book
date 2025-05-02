@@ -5,6 +5,7 @@ import com.example.demo.dto.BookDto;
 import com.example.demo.dto.CreateBookRequestDto;
 import com.example.demo.model.Book;
 import org.mapstruct.Mapper;
+import org.springframework.web.bind.annotation.Mapping;
 
 @Mapper(config = MapperConfig.class)
 public interface BookMapper {
