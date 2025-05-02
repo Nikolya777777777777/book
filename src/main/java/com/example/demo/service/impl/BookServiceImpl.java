@@ -7,7 +7,6 @@ import com.example.demo.model.Book;
 import com.example.demo.repository.BookRepository;
 import com.example.demo.service.BookService;
 import java.util.List;
-import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,9 +18,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto createBook(CreateBookRequestDto requestBook) {
-        Book book = bookMapper.toModel(requestBook);
-        book.setIsbn("abc" + new Random().nextInt(1000));
-        return bookMapper.toDto(bookRepository.createBook(book));
+        return bookMapper.toDto(bookRepository.createBook(bookMapper.toModel(requestBook)));
     }
 
     @Override
