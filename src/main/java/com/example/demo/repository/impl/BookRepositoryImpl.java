@@ -7,6 +7,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -49,11 +50,12 @@ public class BookRepositoryImpl implements BookRepository {
     }
 
     @Override
-    public Book getBookById(Long id) {
+    public Optional<Book> getBookById(Long id) {
         try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
-            return entityManager.createQuery("from Book where id = :id", Book.class)
+            return Optional.ofNullable(
+                    entityManager.createQuery("from Book where id = :id", Book.class)
                     .setParameter("id", id)
-                    .getSingleResult();
+                    .getSingleResult());
         } catch (RuntimeException e) {
             throw new DataProcessingException("All books were not found", e);
         }
