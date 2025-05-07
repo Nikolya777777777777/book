@@ -6,8 +6,10 @@ import com.example.demo.repository.BookRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
+
 import java.util.List;
 import java.util.Optional;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -54,8 +56,8 @@ public class BookRepositoryImpl implements BookRepository {
         try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
             return Optional.ofNullable(
                     entityManager.createQuery("from Book where id = :id", Book.class)
-                    .setParameter("id", id)
-                    .getSingleResult());
+                            .setParameter("id", id)
+                            .getSingleResult());
         } catch (RuntimeException e) {
             throw new DataProcessingException("All books were not found", e);
         }
