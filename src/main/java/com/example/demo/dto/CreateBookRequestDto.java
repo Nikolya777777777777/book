@@ -9,5 +9,6 @@ public class CreateBookRequestDto {
     private String author;
     private BigDecimal price;
     private String description;
+    private String isbn;
     private String coverImage;
 }
