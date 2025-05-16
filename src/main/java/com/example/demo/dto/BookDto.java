@@ -12,5 +12,4 @@ public class BookDto {
     private String isbn;
     private String description;
     private String coverImage;
-
 }
