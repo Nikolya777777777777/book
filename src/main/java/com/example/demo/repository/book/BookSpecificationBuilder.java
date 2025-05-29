@@ -1,5 +1,9 @@
 package com.example.demo.repository.book;
 
+import static com.example.demo.repository.book.spec.AuthorSpecificationProvider.AUTHOR_KEY;
+import static com.example.demo.repository.book.spec.IsbnSpecificationProvider.ISBN_KEY;
+import static com.example.demo.repository.book.spec.TitleSpecificationProvider.TITLE_KEY;
+
 import com.example.demo.dto.BookSearchParametersDto;
 import com.example.demo.model.Book;
 import com.example.demo.repository.SpecificationBuilder;
@@ -18,17 +22,17 @@ public class BookSpecificationBuilder implements SpecificationBuilder<Book> {
         Specification<Book> spec = Specification.where(null);
         if (searchParameters.authors() != null && searchParameters.authors().length > 0) {
             spec = spec.and(bookSpecificationProviderManager
-                    .getSpecificationProvider("author")
+                    .getSpecificationProvider(AUTHOR_KEY)
                     .getSpecification(searchParameters.authors()));
         }
         if (searchParameters.isbns() != null && searchParameters.isbns().length > 0) {
             spec = spec.and(bookSpecificationProviderManager
-                    .getSpecificationProvider("isbn")
+                    .getSpecificationProvider(ISBN_KEY)
                     .getSpecification(searchParameters.isbns()));
         }
         if (searchParameters.titles() != null && searchParameters.titles().length > 0) {
             spec = spec.and(bookSpecificationProviderManager
-                    .getSpecificationProvider("title")
+                    .getSpecificationProvider(TITLE_KEY)
                     .getSpecification(searchParameters.titles()));
         }
         return spec;
