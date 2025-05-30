@@ -1,5 +1,6 @@
 package com.example.demo.repository.book;
 
+import com.example.demo.exception.SpecificationProviderManagerException;
 import com.example.demo.model.Book;
 import com.example.demo.repository.SpecificationProvider;
 import com.example.demo.repository.SpecificationProviderManager;
@@ -17,7 +18,7 @@ public class BookSpecificationProviderManager implements SpecificationProviderMa
         return bookSpecificationProviders.stream()
                 .filter(p -> p.getKey().equals(key))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("Can't find "
+                .orElseThrow(() -> new SpecificationProviderManagerException("Can't find "
                         + "correct specification provider for key " + key));
     }
 }
