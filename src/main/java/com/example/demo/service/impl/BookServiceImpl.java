@@ -1,14 +1,17 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.dto.BookDto;
+import com.example.demo.dto.BookSearchParametersDto;
 import com.example.demo.dto.CreateBookRequestDto;
 import com.example.demo.mapper.BookMapper;
 import com.example.demo.model.Book;
-import com.example.demo.repository.BookRepository;
+import com.example.demo.repository.book.BookRepository;
+import com.example.demo.repository.book.BookSpecificationBuilder;
 import com.example.demo.service.BookService;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,6 +19,7 @@ import org.springframework.stereotype.Service;
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final BookMapper bookMapper;
+    private final BookSpecificationBuilder bookSpecificationBuilder;
 
     @Override
     public BookDto createBook(CreateBookRequestDto requestBook) {
@@ -32,7 +36,8 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto getBookById(Long id) {
-        Book book = bookRepository.findById(id).get();
+        Book book = bookRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("Can not find book with id: " + id));
         return bookMapper.toDto(book);
     }
 
@@ -44,14 +49,18 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookDto updateBook(Long id, CreateBookRequestDto requestBook) {
         Book book = bookRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Book not found"));
-        book.setTitle(requestBook.getTitle());
-        book.setPrice(requestBook.getPrice());
-        book.setId(id);
-        book.setIsbn(requestBook.getIsbn());
-        book.setAuthor(requestBook.getAuthor());
-        book.setDescription(requestBook.getDescription());
-        book.setCoverImage(requestBook.getCoverImage());
+                .orElseThrow(() -> new EntityNotFoundException("Book: "
+                        + requestBook + " was not found"));
+        book = bookMapper.updateBookFromDto(requestBook, book);
         return bookMapper.toDto(bookRepository.save(book));
+    }
+
+    @Override
+    public List<BookDto> search(BookSearchParametersDto params) {
+        Specification<Book> bookSpecification = bookSpecificationBuilder.build(params);
+        return bookRepository.findAll(bookSpecification)
+                .stream()
+                .map(bookMapper::toDto)
+                .toList();
     }
 }
