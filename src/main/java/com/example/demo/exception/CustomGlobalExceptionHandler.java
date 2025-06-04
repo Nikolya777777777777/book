@@ -28,7 +28,6 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
     ) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
-        body.put("status", HttpStatus.BAD_REQUEST);
         List<String> errors = ex.getBindingResult().getAllErrors()
                 .stream()
                 .map(this::getErrorMessage)
@@ -53,7 +52,6 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
     ) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
-        body.put("status", HttpStatus.NOT_FOUND);
         body.put("error", "Entity not found");
         body.put("message", ex.getMessage());
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
