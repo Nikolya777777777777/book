@@ -4,6 +4,8 @@ import com.example.demo.dto.BookDto;
 import com.example.demo.dto.BookSearchParametersDto;
 import com.example.demo.dto.CreateBookRequestDto;
 import com.example.demo.service.BookService;
+import jakon.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,7 +38,7 @@ public class BookController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public BookDto createBook(@RequestBody CreateBookRequestDto requestBook) {
+    public BookDto createBook(@RequestBody @Valid CreateBookRequestDto requestBook) {
         return bookService.createBook(requestBook);
     }
 
@@ -48,12 +50,11 @@ public class BookController {
 
     @PutMapping("/{id}")
     public BookDto updateBook(@PathVariable Long id,
-                              @RequestBody CreateBookRequestDto requestBook) {
+                              @RequestBody @Valid CreateBookRequestDto requestBook) {
         return bookService.updateBook(id, requestBook);
     }
 
     @GetMapping("/search")
     public Page<BookDto> searchBooks(BookSearchParametersDto searchParameters, Pageable pageable) {
         return bookService.search(searchParameters, pageable);
-    }
 }
