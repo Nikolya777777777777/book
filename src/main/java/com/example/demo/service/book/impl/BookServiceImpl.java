@@ -11,14 +11,13 @@ import com.example.demo.repository.book.BookSpecificationBuilder;
 import com.example.demo.service.book.BookService;
 import com.example.demo.service.user.UserService;
 import jakarta.persistence.EntityNotFoundException;
+import java.util.Collections;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-
-import java.util.Collections;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -42,7 +41,8 @@ public class BookServiceImpl implements BookService {
     @Override
     public Page<BookDto> getAll(String email, Pageable pageable) {
         UserResponseDto userResponseDto = userService.getByEmail(email);
-        List<Book> allBooksById = bookRepository.findAllById(Collections.singleton(userResponseDto.getId()));
+        List<Book> allBooksById = bookRepository
+                .findAllById(Collections.singleton(userResponseDto.getId()));
         return (Page<BookDto>) allBooksById.stream().map(bookMapper::toDto);
     }
 

@@ -29,7 +29,8 @@ public class BookController {
 
     @GetMapping
     public Page<BookDto> getAll(Pageable pageable) {
-        Authentication authentication = SecurityContextHolder.getSecurityContext().getAuthentication();
+        Authentication authentication = SecurityContextHolder
+                .getSecurityContext().getAuthentication();
         String email = authentication.getPrincipal();
         return bookService.getAll(email, pageable);
     }
