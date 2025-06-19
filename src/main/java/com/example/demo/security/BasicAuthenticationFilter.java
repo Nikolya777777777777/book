@@ -35,6 +35,7 @@ public class BasicAuthenticationFilter extends HttpFilter {
             return;
         }
 
+        SecurityContextHolder.getSecurityContext().setAuthentication(authentication);
         chain.doFilter(request, response);
     }
 

@@ -25,4 +25,10 @@ public class UserServiceImpl implements UserService {
         User savedUser = userRepository.save(userMapper.toModel(requestDto));
         return userMapper.modelToResponse(savedUser);
     }
+
+    @Override
+    public UserResponseDto getByEmail(String email) {
+        return userRepository.findByEmail(email).map(userMapper::modelToResponse)
+                .orElseThrow(() -> new RuntimeException("Can't find user"));
+    }
 }

@@ -10,6 +10,7 @@ public interface BookService {
     BookDto createBook(CreateBookRequestDto requestBook);
 
     Page<BookDto> getAll(Pageable pageable);
+    Page<BookDto> getAll(String email, Pageable pageable);
 
     BookDto getBookById(Long id);
 
