@@ -3,7 +3,6 @@ package com.example.demo.service.book.impl;
 import com.example.demo.dto.book.BookDto;
 import com.example.demo.dto.book.BookSearchParametersDto;
 import com.example.demo.dto.book.CreateBookRequestDto;
-import com.example.demo.dto.user.UserResponseDto;
 import com.example.demo.mapper.book.BookMapper;
 import com.example.demo.model.Book;
 import com.example.demo.repository.book.BookRepository;
@@ -11,8 +10,6 @@ import com.example.demo.repository.book.BookSpecificationBuilder;
 import com.example.demo.service.book.BookService;
 import com.example.demo.service.user.UserService;
 import jakarta.persistence.EntityNotFoundException;
-import java.util.Collections;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,14 +33,6 @@ public class BookServiceImpl implements BookService {
     public Page<BookDto> getAll(Pageable pageable) {
         return bookRepository.findAll(pageable)
                 .map(bookMapper::toDto);
-    }
-
-    @Override
-    public Page<BookDto> getAll(String email, Pageable pageable) {
-        UserResponseDto userResponseDto = userService.getByEmail(email);
-        List<Book> allBooksById = bookRepository
-                .findAllById(Collections.singleton(userResponseDto.getId()));
-        return (Page<BookDto>) allBooksById.stream().map(bookMapper::toDto);
     }
 
     @Override

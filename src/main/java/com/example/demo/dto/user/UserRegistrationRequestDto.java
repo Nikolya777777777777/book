@@ -13,20 +13,14 @@ public class UserRegistrationRequestDto {
     @Email
     private String email;
     @NotBlank
-    @Length(min = 8, max = 20, message = "Пароль має містити від 8 до 20 символів")
+    @Length(min = 8, max = 20, message = "Password should have from 8 to 20 symbols")
     private String password;
     @NotBlank
-    @Length(min = 8, max = 20, message = "Пароль має містити від 8 до 20 символів")
+    @Length(min = 8, max = 20, message = "Password should have from 8 to 20 symbols")
     private String repeatPassword;
     @NotBlank
     private String firstName;
     @NotBlank
     private String lastName;
-    @NotBlank
     private String shippingAddress;
-
-    public UserRegistrationRequestDto(String email, String password) {
-        this.email = email;
-        this.password = password;
-    }
 }
