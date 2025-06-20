@@ -3,8 +3,6 @@ package com.example.demo.controller;
 import com.example.demo.dto.book.BookDto;
 import com.example.demo.dto.book.BookSearchParametersDto;
 import com.example.demo.dto.book.CreateBookRequestDto;
-import com.example.demo.security.Authentication;
-import com.example.demo.security.SecurityContextHolder;
 import com.example.demo.service.book.BookService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -29,10 +27,7 @@ public class BookController {
 
     @GetMapping
     public Page<BookDto> getAll(Pageable pageable) {
-        Authentication authentication = SecurityContextHolder
-                .getSecurityContext().getAuthentication();
-        String email = authentication.getPrincipal();
-        return bookService.getAll(email, pageable);
+        return bookService.getAll(pageable);
     }
 
     @GetMapping("/{id}")
