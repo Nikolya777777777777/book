@@ -1,13 +1,13 @@
-package com.example.demo.service.impl;
+package com.example.demo.service.book.impl;
 
-import com.example.demo.dto.BookDto;
-import com.example.demo.dto.BookSearchParametersDto;
-import com.example.demo.dto.CreateBookRequestDto;
-import com.example.demo.mapper.BookMapper;
+import com.example.demo.dto.book.BookDto;
+import com.example.demo.dto.book.BookSearchParametersDto;
+import com.example.demo.dto.book.CreateBookRequestDto;
+import com.example.demo.mapper.book.BookMapper;
 import com.example.demo.model.Book;
 import com.example.demo.repository.book.BookRepository;
 import com.example.demo.repository.book.BookSpecificationBuilder;
-import com.example.demo.service.BookService;
+import com.example.demo.service.book.BookService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

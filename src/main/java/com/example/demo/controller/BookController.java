@@ -1,9 +1,9 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.BookDto;
-import com.example.demo.dto.BookSearchParametersDto;
-import com.example.demo.dto.CreateBookRequestDto;
-import com.example.demo.service.BookService;
+import com.example.demo.dto.book.BookDto;
+import com.example.demo.dto.book.BookSearchParametersDto;
+import com.example.demo.dto.book.CreateBookRequestDto;
+import com.example.demo.service.book.BookService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
