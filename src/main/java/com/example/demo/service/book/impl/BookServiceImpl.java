@@ -8,7 +8,6 @@ import com.example.demo.model.Book;
 import com.example.demo.repository.book.BookRepository;
 import com.example.demo.repository.book.BookSpecificationBuilder;
 import com.example.demo.service.book.BookService;
-import com.example.demo.service.user.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,7 +21,6 @@ public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final BookMapper bookMapper;
     private final BookSpecificationBuilder bookSpecificationBuilder;
-    private final UserService userService;
 
     @Override
     public BookDto createBook(CreateBookRequestDto requestBook) {
