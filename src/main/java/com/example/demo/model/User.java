@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.example.demo.model.enums.RoleName;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -19,6 +20,7 @@ import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
@@ -52,7 +54,10 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        if (email.startsWith("admin")) {
+            return List.of(new SimpleGrantedAuthority(String.valueOf(RoleName.ROLE_ADMIN)));
+        }
+        return List.of(new SimpleGrantedAuthority(String.valueOf(RoleName.ROLE_USER)));
     }
 
     @Override
