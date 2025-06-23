@@ -1,6 +1,5 @@
 package com.example.demo.model;
 
-import com.example.demo.model.enums.RoleName;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -13,14 +12,12 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
@@ -44,9 +41,9 @@ public class User implements UserDetails {
     private String shippingAddress;
     private boolean isDeleted;
 
-    @ManyToMany(fetch = FetchType.EAGER) // або LAZY
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-            name = "user_roles",
+            name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
@@ -54,10 +51,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (email.startsWith("admin")) {
-            return List.of(new SimpleGrantedAuthority(String.valueOf(RoleName.ROLE_ADMIN)));
-        }
-        return List.of(new SimpleGrantedAuthority(String.valueOf(RoleName.ROLE_USER)));
+        return roles;
     }
 
     @Override
