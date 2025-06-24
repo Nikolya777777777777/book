@@ -1,0 +1,36 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-admin-user
+      author: Mykola
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 1
+              - column:
+                  name: email
+                  value: admin@gmail.com
+              - column:
+                  name: password
+                  value: $2a$10$yK6h0jOKX9xB3lYOd/VaWe1uMcl5bEG96C2BBZvcMf7.k0EIbSOIW
+                  # this is password "admin123" in format BCrypt
+              - column:
+                  name: first_name
+                  value: Admin
+              - column:
+                  name: last_name
+                  value: User
+
+        - insert:
+            tableName: users_roles
+            columns:
+              - column:
+                  name: user_id
+                  valueNumeric: 1
+              - column:
+                  name: role_id
+                  valueNumeric: 2
+                  # where 2 — is id of the role ADMIN
+  

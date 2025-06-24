@@ -19,3 +19,22 @@ databaseChangeLog:
                   constraints:
                     nullable: false
                     unique: true
+        - insert:
+            tableName: roles
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 1
+              - column:
+                  name: name
+                  value: ROLE_USER
+
+        - insert:
+            tableName: roles
+            columns:
+              - column:
+                   name: id
+                   valueNumeric: 2
+              - column:
+                    name: name
+                    value: ROLE_ADMIN
