@@ -25,41 +25,38 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/books")
 public class BookController {
     private final BookService bookService;
-
-    @PreAuthorize("hasRole('USER')")
+    
     @GetMapping
     public Page<BookDto> getAll(Pageable pageable) {
         return bookService.getAll(pageable);
     }
 
-    @PreAuthorize("hasRole('USER')")
     @GetMapping("/{id}")
     public BookDto getBookById(@PathVariable Long id) {
         return bookService.getBookById(id);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public BookDto createBook(@RequestBody @Valid CreateBookRequestDto requestBook) {
         return bookService.createBook(requestBook);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         bookService.deleteById(id);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/{id}")
     public BookDto updateBook(@PathVariable Long id,
                               @RequestBody @Valid CreateBookRequestDto requestBook) {
         return bookService.updateBook(id, requestBook);
     }
 
-    @PreAuthorize("hasRole('USER')")
     @GetMapping("/search")
     public Page<BookDto> searchBooks(@Valid BookSearchParametersDto searchParameters,
                                      Pageable pageable) {
