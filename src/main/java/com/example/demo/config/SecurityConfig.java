@@ -1,7 +1,5 @@
 package com.example.demo.config;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
 import com.example.demo.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
