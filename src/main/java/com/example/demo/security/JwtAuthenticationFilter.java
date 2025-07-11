@@ -19,8 +19,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-    private final JwtUtil jwtUtil;
+    private static final int BEARER_TOKEN_LENGTH = 7;
     private final UserDetailsService userDetailsService;
+    private final JwtUtil jwtUtil;
 
     @Override
     protected void doFilterInternal(
@@ -30,12 +31,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
         String token = getToken(request);
 
-        if (shouldNotFilter(request)) {
-            filterChain.doFilter(request, response);
-            return;
-        }
+//        if (shouldNotFilter(request)) {
+//            filterChain.doFilter(request, response);
+//            return;
+//        }
 
-        boolean isTokenValid = jwtUtil.isValidToken(token);
         if (token != null && jwtUtil.isValidToken(token)) {
             String userName = jwtUtil.getUsername(token);
             UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
@@ -46,16 +46,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        String path = request.getRequestURI();
-        return path.startsWith("/auth/registration") || path.startsWith("/auth/login");
-    }
+//    @Override
+//    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+//        String path = request.getRequestURI();
+//        return path.startsWith("/auth/registration") || path.startsWith("/auth/login");
+//    }
 
     private String getToken(HttpServletRequest request) {
         String token = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (StringUtils.hasText(token) && token.startsWith("Bearer ")) {
-            return token.substring(7);
+            return token.substring(BEARER_TOKEN_LENGTH);
         }
         return token;
     }
