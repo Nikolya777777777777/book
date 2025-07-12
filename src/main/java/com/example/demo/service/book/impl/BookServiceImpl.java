@@ -60,4 +60,10 @@ public class BookServiceImpl implements BookService {
         return bookRepository.findAll(bookSpecification, pageable)
                 .map(bookMapper::toDto);
     }
+
+    @Override
+    public Page<BookDto> findAllBooksByCategoryId(Long id, Pageable pageable) {
+        Page<Book> books = bookRepository.findAllBooksByCategories_Id(id, pageable);
+        return books.map(bookMapper::toDto);
+    }
 }
