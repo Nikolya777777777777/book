@@ -5,12 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
-import java.util.HashSet;
-import java.util.Set;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
@@ -22,6 +18,7 @@ import org.hibernate.annotations.SQLRestriction;
 @SQLRestriction(value = "is_deleted=false")
 @Getter
 @Setter
+@AllArgsConstructor
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,11 +30,13 @@ public class Category {
     @Column(nullable = false)
     private boolean isDeleted = false;
 
-    @ManyToMany
-    @JoinTable(
-            name = "books_categories",
-            joinColumns = @JoinColumn(name = "category_id"),
-            inverseJoinColumns = @JoinColumn(name = "book_id")
-    )
-    private Set<Book> books = new HashSet<>();
+    public Category(Category category) {
+        this.id = category.getId();
+        this.name = category.getName();
+        this.description = category.getDescription();
+    }
+
+    public Category() {
+
+    }
 }
