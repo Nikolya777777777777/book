@@ -10,8 +10,9 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
@@ -20,7 +21,8 @@ import org.hibernate.annotations.SQLRestriction;
 @Table(name = "categories")
 @SQLDelete(sql = "UPDATE categories SET is_deleted = true WHERE id=?")
 @SQLRestriction(value = "is_deleted=false")
-@Data
+@Getter
+@Setter
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -6,11 +6,13 @@ import com.example.demo.mapper.category.CategoryMapper;
 import com.example.demo.model.Category;
 import com.example.demo.repository.category.CategoryRepository;
 import com.example.demo.service.category.CategoryService;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
     private CategoryRepository categoryRepository;
     private CategoryMapper categoryMapper;
@@ -41,5 +43,17 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Category was not found by id: " + id));
         categoryRepository.deleteById(id);
+    }
+
+    @Override
+    public Page<CategoryResponseDto> findAllCategories(Pageable pageable) {
+        return categoryRepository.findAll(pageable).map(categoryMapper::toResponseDto);
+    }
+
+    @Override
+    public CategoryResponseDto getCategoryById(Long id) {
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Category was not found by id: " + id));
+        return categoryMapper.toResponseDto(category);
     }
 }
