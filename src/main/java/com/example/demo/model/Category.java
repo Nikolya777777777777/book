@@ -6,8 +6,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
@@ -18,7 +18,7 @@ import org.hibernate.annotations.SQLRestriction;
 @SQLRestriction(value = "is_deleted=false")
 @Getter
 @Setter
-@AllArgsConstructor
+@NoArgsConstructor
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +27,7 @@ public class Category {
     private String name;
 
     private String description;
+
     @Column(nullable = false)
     private boolean isDeleted = false;
 
@@ -34,9 +35,5 @@ public class Category {
         this.id = category.getId();
         this.name = category.getName();
         this.description = category.getDescription();
-    }
-
-    public Category() {
-
     }
 }

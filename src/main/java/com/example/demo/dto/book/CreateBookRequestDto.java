@@ -21,5 +21,6 @@ public class CreateBookRequestDto {
     @NotBlank
     private String isbn;
     private String coverImage;
+    @NotBlank
     private Set<Category> categoriesIds;
 }

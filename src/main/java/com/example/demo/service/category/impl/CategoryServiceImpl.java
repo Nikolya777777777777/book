@@ -2,20 +2,21 @@ package com.example.demo.service.category.impl;
 
 import com.example.demo.dto.category.CategoryRequestDto;
 import com.example.demo.dto.category.CategoryResponseDto;
+import com.example.demo.exception.EntityNotFoundException;
 import com.example.demo.mapper.category.CategoryMapper;
 import com.example.demo.model.Category;
 import com.example.demo.repository.category.CategoryRepository;
 import com.example.demo.service.category.CategoryService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
-    private CategoryRepository categoryRepository;
-    private CategoryMapper categoryMapper;
+    private final CategoryRepository categoryRepository;
+    private final CategoryMapper categoryMapper;
 
     @Override
     public CategoryResponseDto createCategory(CategoryRequestDto categoryRequestDto) {
@@ -26,22 +27,24 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryResponseDto findCategoryById(Long id) {
         Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Category not found by id: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Category not found by id: " + id));
         return categoryMapper.toResponseDto(category);
     }
 
     @Override
     public CategoryResponseDto updateCategory(Long id, CategoryRequestDto categoryRequestDto) {
         Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Category was not found by id: " + id));
-        category = categoryMapper.updateCategoryFromDb(categoryRequestDto, category);
+                .orElseThrow(() -> new EntityNotFoundException("Category "
+                        + "was not found by id: " + id));
+        categoryMapper.updateCategoryFromDb(categoryRequestDto, category);
         return categoryMapper.toResponseDto(categoryRepository.save(category));
     }
 
     @Override
     public void deleteCategory(Long id) {
         Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Category was not found by id: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Category "
+                        + "was not found by id: " + id));
         categoryRepository.deleteById(id);
     }
 
@@ -53,7 +56,8 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryResponseDto getCategoryById(Long id) {
         Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Category was not found by id: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Category was "
+                        + "not found by id: " + id));
         return categoryMapper.toResponseDto(category);
     }
 }
