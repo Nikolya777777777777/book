@@ -31,9 +31,7 @@ public class Category {
     @Column(nullable = false)
     private boolean isDeleted = false;
 
-    public Category(Category category) {
-        this.id = category.getId();
-        this.name = category.getName();
-        this.description = category.getDescription();
+    public Category(Long id) {
+        this.id = id;
     }
 }
