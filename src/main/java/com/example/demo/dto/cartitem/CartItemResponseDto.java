@@ -1,4 +1,4 @@
-package com.example.demo.dto.cartItem;
+package com.example.demo.dto.cartitem;
 
 import lombok.Data;
 

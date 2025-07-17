@@ -1,8 +1,8 @@
-package com.example.demo.service.shoppingCart.impl;
+package com.example.demo.service.shoppingcart.impl;
 
-import com.example.demo.dto.shoppingCart.ShoppingCartResponseDto;
-import com.example.demo.repository.shoppingCart.ShoppingCartRepository;
-import com.example.demo.service.shoppingCart.ShoppingCartService;
+import com.example.demo.dto.shoppingcart.ShoppingCartResponseDto;
+import com.example.demo.repository.shoppingcart.ShoppingCartRepository;
+import com.example.demo.service.shoppingcart.ShoppingCartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ShoppingCartServiceImpl implements ShoppingCartService {
     private final ShoppingCartRepository shoppingCartRepository;
+
     @Override
     public ShoppingCartResponseDto getShoppingCart() {
         //return shoppingCartRepository.findById(Long.valueOf("100"));
