@@ -1,6 +1,7 @@
 package com.example.demo.mapper.shoppingcart;
 
 import com.example.demo.config.MapperConfig;
+import com.example.demo.dto.shoppingcart.ShoppingCartRequestDto;
 import com.example.demo.dto.shoppingcart.ShoppingCartResponseDto;
 import com.example.demo.model.ShoppingCart;
 import org.mapstruct.Mapper;
@@ -9,4 +10,7 @@ import org.mapstruct.Mapper;
 public interface ShoppingCartMapper {
     ShoppingCartResponseDto toResponseDto(ShoppingCart shoppingCart);
 
+    ShoppingCart toEntityFromRequestDto(ShoppingCartRequestDto shoppingCartRequestDto);
+
+    ShoppingCart toEntityFromResponseDto(ShoppingCartResponseDto shoppingCartResponseDto);
 }
