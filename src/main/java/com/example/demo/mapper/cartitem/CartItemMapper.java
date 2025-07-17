@@ -10,6 +10,8 @@ import org.mapstruct.MappingTarget;
 @Mapper(config = MapperConfig.class)
 public interface CartItemMapper {
     CartItem updateCartItemFromDb(@MappingTarget CartItem cartItem,
-                                  ShoppingCartRequestDtoWithoutBookId shoppingCartRequestDtoWithoutBookId);
+                                  ShoppingCartRequestDtoWithoutBookId
+                                          shoppingCartRequestDtoWithoutBookId);
+
     CartItemResponseDto toResponseDto(CartItem cartItem);
 }

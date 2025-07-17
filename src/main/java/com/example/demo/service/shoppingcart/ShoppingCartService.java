@@ -6,6 +6,8 @@ import com.example.demo.model.ShoppingCart;
 
 public interface ShoppingCartService {
     ShoppingCartResponseDto getShoppingCartByUserName(String userName);
+
     ShoppingCartResponseDto saveShoppingCart(ShoppingCart shoppingCart);
+
     boolean deleteCartItemInShoppingCart(ShoppingCart shoppingCart, CartItem cartItem);
 }

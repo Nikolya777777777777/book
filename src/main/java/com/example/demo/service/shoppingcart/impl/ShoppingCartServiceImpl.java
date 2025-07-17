@@ -1,6 +1,5 @@
 package com.example.demo.service.shoppingcart.impl;
 
-import com.example.demo.dto.shoppingcart.ShoppingCartRequestDto;
 import com.example.demo.dto.shoppingcart.ShoppingCartResponseDto;
 import com.example.demo.mapper.shoppingcart.ShoppingCartMapper;
 import com.example.demo.model.CartItem;
@@ -9,7 +8,6 @@ import com.example.demo.repository.shoppingcart.ShoppingCartRepository;
 import com.example.demo.service.shoppingcart.ShoppingCartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +28,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public boolean deleteCartItemInShoppingCart(ShoppingCart shoppingCart, CartItem cartItem) {
-        if(shoppingCart.getCartItems().remove(cartItem)) {
+        if (shoppingCart.getCartItems().remove(cartItem)) {
             shoppingCartRepository.save(shoppingCart);
             return true;
         }
