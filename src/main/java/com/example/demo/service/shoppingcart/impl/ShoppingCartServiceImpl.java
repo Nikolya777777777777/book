@@ -16,9 +16,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private final ShoppingCartMapper shoppingCartMapper;
 
     @Override
-    public ShoppingCartResponseDto getShoppingCartByUserName(String userName) {
+    public ShoppingCartResponseDto getShoppingCartByUserEmail(String email) {
         return shoppingCartMapper.toResponseDto(shoppingCartRepository
-                .getShoppingCartByUserName(userName));
+                .getShoppingCartByUserEmail(email));
     }
 
     @Override

@@ -37,7 +37,7 @@ public class ShoppingCartController {
         Authentication authentication = SecurityContextHolder.getContext()
                 .getAuthentication();
         String username = authentication.getName();
-        return shoppingCartService.getShoppingCartByUserName(username);
+        return shoppingCartService.getShoppingCartByUserEmail(username);
     }
 
     @PostMapping
@@ -61,7 +61,7 @@ public class ShoppingCartController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         ShoppingCart shoppingCart = shoppingCartMapper.toEntityFromResponseDto(shoppingCartService
-                .getShoppingCartByUserName(username));
+                .getShoppingCartByUserEmail(username));
         Set<CartItem> cartItems = shoppingCart.getCartItems();
         CartItem cartItemFromDb = cartItemService.checkIfCartItemExistInShoppingCart(cartItems, id);
         CartItem updatedCartItem = cartItemMapper.updateCartItemFromDb(cartItemFromDb,
@@ -75,7 +75,7 @@ public class ShoppingCartController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         ShoppingCart shoppingCart = shoppingCartMapper.toEntityFromResponseDto(shoppingCartService
-                .getShoppingCartByUserName(username));
+                .getShoppingCartByUserEmail(username));
         Set<CartItem> cartItems = shoppingCart.getCartItems();
         CartItem cartItem = cartItemService.checkIfCartItemExistInShoppingCart(cartItems, id);
         shoppingCartService.deleteCartItemInShoppingCart(shoppingCart, cartItem);

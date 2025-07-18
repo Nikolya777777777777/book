@@ -5,7 +5,7 @@ import com.example.demo.model.CartItem;
 import com.example.demo.model.ShoppingCart;
 
 public interface ShoppingCartService {
-    ShoppingCartResponseDto getShoppingCartByUserName(String userName);
+    ShoppingCartResponseDto getShoppingCartByUserEmail(String email);
 
     ShoppingCartResponseDto saveShoppingCart(ShoppingCart shoppingCart);
 
