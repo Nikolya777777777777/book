@@ -51,7 +51,8 @@ public class ShoppingCartController {
         shoppingCart.setCartItems(Set.of(cartItem));
         shoppingCart.setUser(user);
         cartItem.setShoppingCart(shoppingCart);
-        ShoppingCartResponseDto shoppingCartResponseDto = shoppingCartService.saveShoppingCart(shoppingCart);
+        ShoppingCartResponseDto shoppingCartResponseDto = shoppingCartService
+                .saveShoppingCart(shoppingCart);
         return shoppingCartResponseDto;
     }
 
