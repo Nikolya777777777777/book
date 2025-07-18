@@ -45,12 +45,14 @@ public class ShoppingCartController {
             @RequestBody ShoppingCartRequestDto shoppingCartRequestDto) {
         Authentication authentication = SecurityContextHolder.getContext()
                 .getAuthentication();
-        String username = authentication.getName();
-        ShoppingCart shoppingCart = shoppingCartMapper
-                .toEntityFromRequestDto(shoppingCartRequestDto);
         User user = (User) authentication.getPrincipal();
+        CartItem cartItem = cartItemMapper.shopingCartRequestDtoToCartItem(shoppingCartRequestDto);
+        ShoppingCart shoppingCart = new ShoppingCart();
+        shoppingCart.setCartItems(Set.of(cartItem));
         shoppingCart.setUser(user);
-        return shoppingCartService.saveShoppingCart(shoppingCart);
+        cartItem.setShoppingCart(shoppingCart);
+        ShoppingCartResponseDto shoppingCartResponseDto = shoppingCartService.saveShoppingCart(shoppingCart);
+        return shoppingCartResponseDto;
     }
 
     @PutMapping("/items{id}")
