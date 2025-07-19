@@ -24,10 +24,10 @@ public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @JoinColumn(nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "shopping_cart_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private ShoppingCart shoppingCart;
-    @JoinColumn(nullable = false)
+    @JoinColumn(name = "book_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Book book;
     @Column(nullable = false)

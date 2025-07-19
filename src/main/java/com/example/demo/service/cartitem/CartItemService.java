@@ -1,11 +1,9 @@
 package com.example.demo.service.cartitem;
 
-import com.example.demo.dto.cartitem.CartItemResponseDto;
+import com.example.demo.model.Book;
 import com.example.demo.model.CartItem;
-import java.util.Set;
+import com.example.demo.model.User;
 
 public interface CartItemService {
-    CartItem checkIfCartItemExistInShoppingCart(Set<CartItem> cartItems, Long id);
-
-    CartItemResponseDto save(CartItem updatedCartItem);
+    CartItem createCartItem(Book book, User user);
 }

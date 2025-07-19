@@ -44,6 +44,13 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public boolean checkIfBookExists(Long id) {
+        bookRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Can not find book with id: " + id));
+        return true;
+    }
+
+    @Override
     public void deleteById(Long id) {
         bookRepository.deleteById(id);
     }

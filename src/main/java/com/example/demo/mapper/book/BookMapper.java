@@ -18,6 +18,8 @@ public interface BookMapper {
 
     Book toModel(CreateBookRequestDto createBookRequestDto);
 
+    Book dtoToModel(BookDto bookDto);
+
     Book updateBookFromDto(CreateBookRequestDto book, @MappingTarget Book entity);
 
     @AfterMapping

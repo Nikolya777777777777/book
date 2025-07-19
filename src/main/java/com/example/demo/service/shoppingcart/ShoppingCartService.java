@@ -5,9 +5,10 @@ import com.example.demo.model.CartItem;
 import com.example.demo.model.ShoppingCart;
 
 public interface ShoppingCartService {
-    ShoppingCartResponseDto getShoppingCartByUserEmail(String email);
 
-    ShoppingCartResponseDto saveShoppingCart(ShoppingCart shoppingCart);
+    ShoppingCartResponseDto getShoppingCartByUserId(Long id);
 
-    boolean deleteCartItemInShoppingCart(ShoppingCart shoppingCart, CartItem cartItem);
+    ShoppingCartResponseDto addCartItemToShoppingCart(CartItem cartItem, ShoppingCart shoppingCart);
+
+    boolean deleteCartItemInShoppingCart(ShoppingCart shoppingCart, Long cartItemId);
 }

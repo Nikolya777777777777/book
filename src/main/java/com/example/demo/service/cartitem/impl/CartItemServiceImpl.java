@@ -1,13 +1,13 @@
 package com.example.demo.service.cartitem.impl;
 
-import com.example.demo.dto.cartitem.CartItemResponseDto;
-import com.example.demo.mapper.cartitem.CartItemMapper;
+import com.example.demo.mapper.shoppingcart.ShoppingCartMapper;
+import com.example.demo.model.Book;
 import com.example.demo.model.CartItem;
+import com.example.demo.model.ShoppingCart;
+import com.example.demo.model.User;
 import com.example.demo.repository.cartitem.CartItemRepository;
-import com.example.demo.repository.shoppingcart.ShoppingCartRepository;
 import com.example.demo.service.cartitem.CartItemService;
-import java.util.Objects;
-import java.util.Set;
+import com.example.demo.service.shoppingcart.ShoppingCartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,21 +15,16 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CartItemServiceImpl implements CartItemService {
     private final CartItemRepository cartItemRepository;
-    private final CartItemMapper cartItemMapper;
-    private final ShoppingCartRepository shoppingCartRepository;
+    private final ShoppingCartService shoppingCartService;
+    private final ShoppingCartMapper shoppingCartMapper;
 
     @Override
-    public CartItem checkIfCartItemExistInShoppingCart(Set<CartItem> cartItems, Long id) {
-        for (CartItem cartItem : cartItems) {
-            if (Objects.equals(cartItem.getId(), id)) {
-                return cartItem;
-            }
-        }
-        throw new RuntimeException("CartItem with id " + id + " was not found");
-    }
-
-    @Override
-    public CartItemResponseDto save(CartItem updatedCartItem) {
-        return cartItemMapper.toResponseDto(cartItemRepository.save(updatedCartItem));
+    public CartItem createCartItem(Book book, User user) {
+        CartItem cartItem = new CartItem();
+        cartItem.setBook(book);
+        ShoppingCart shoppingCart = shoppingCartMapper.toEntityFromResponseDto(shoppingCartService
+                .getShoppingCartByUserId(user.getId()));
+        cartItem.setShoppingCart(shoppingCart);
+        return cartItemRepository.save(cartItem);
     }
 }
