@@ -1,12 +1,12 @@
 package com.example.demo.dto.cartitem;
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Data;
 
 @Data
 public class CartItemRequestDto {
-    @NotBlank
+    @NotNull
     private Long bookId;
     @Positive
     private int quantity;
