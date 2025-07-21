@@ -4,6 +4,7 @@ import com.example.demo.dto.shoppingcart.ShoppingCartResponseDto;
 import com.example.demo.mapper.shoppingcart.ShoppingCartMapper;
 import com.example.demo.model.CartItem;
 import com.example.demo.model.ShoppingCart;
+import com.example.demo.model.User;
 import com.example.demo.repository.cartitem.CartItemRepository;
 import com.example.demo.repository.shoppingcart.ShoppingCartRepository;
 import com.example.demo.service.shoppingcart.ShoppingCartService;
@@ -45,5 +46,12 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             }
         }
         return false;
+    }
+
+    @Override
+    public void createShoppingCartForUser(User user) {
+        ShoppingCart shoppingCart = new ShoppingCart();
+        shoppingCart.setUser(user);
+        shoppingCartRepository.save(shoppingCart);
     }
 }

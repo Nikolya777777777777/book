@@ -5,12 +5,12 @@ import com.example.demo.dto.user.UserResponseDto;
 import com.example.demo.exception.RegistrationException;
 import com.example.demo.mapper.user.UserMapper;
 import com.example.demo.model.Role;
-import com.example.demo.model.ShoppingCart;
 import com.example.demo.model.User;
 import com.example.demo.model.enums.RoleName;
 import com.example.demo.repository.role.RoleRepository;
 import com.example.demo.repository.shoppingcart.ShoppingCartRepository;
 import com.example.demo.repository.user.UserRepository;
+import com.example.demo.service.shoppingcart.ShoppingCartService;
 import com.example.demo.service.user.UserService;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +25,7 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
     private final ShoppingCartRepository shoppingCartRepository;
+    private final ShoppingCartService shoppingCartService;
 
     @Override
     public UserResponseDto register(UserRegistrationRequestDto requestDto)
@@ -39,9 +40,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new RuntimeException("Role USER not found"));
 
         userToSave.setRoles(Set.of(userRole));
-        ShoppingCart shoppingCart = new ShoppingCart();
-        shoppingCart.setUser(userToSave);
-        shoppingCartRepository.save(shoppingCart);
+        shoppingCartService.createShoppingCartForUser(userToSave);
         userRepository.save(userToSave);
         return userMapper.modelToResponse(userToSave);
     }

@@ -71,7 +71,7 @@ public class ShoppingCartController {
     })
     @PutMapping("/items{id}")
     public ShoppingCartResponseDto updateCartItemInShoppingCart(@PathVariable Long id,
-                                                      @RequestBody
+                                                      @RequestBody @Valid
                                                       UpdateCartItemDto
                                                               updateCartItemDto,
                                                       @AuthenticationPrincipal User user) {
