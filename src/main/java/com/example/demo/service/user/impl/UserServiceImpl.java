@@ -40,8 +40,8 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new RuntimeException("Role USER not found"));
 
         userToSave.setRoles(Set.of(userRole));
-        shoppingCartService.createShoppingCartForUser(userToSave);
         userRepository.save(userToSave);
+        shoppingCartService.createShoppingCartForUser(userToSave);
         return userMapper.modelToResponse(userToSave);
     }
 }
