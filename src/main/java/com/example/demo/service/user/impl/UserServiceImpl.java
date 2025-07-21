@@ -15,8 +15,10 @@ import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
@@ -35,11 +37,11 @@ public class UserServiceImpl implements UserService {
         User userToSave = userMapper.toModel(requestDto);
         userToSave.setPassword(passwordEncoder.encode(requestDto.getPassword()));
         Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
-                .orElseThrow(() -> new RuntimeException("Role USER not found"));
+                .orElseThrow(() -> new RuntimeException(RoleName.ROLE_USER + " was not found"));
 
         userToSave.setRoles(Set.of(userRole));
         userRepository.save(userToSave);
-        shoppingCartService.updateShoppingCartForUser(userToSave);
+        shoppingCartService.createShoppingCartForUser(userToSave);
         return userMapper.modelToResponse(userToSave);
     }
 }

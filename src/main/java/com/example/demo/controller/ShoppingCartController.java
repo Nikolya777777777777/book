@@ -4,8 +4,6 @@ import com.example.demo.dto.cartitem.CartItemRequestDto;
 import com.example.demo.dto.cartitem.UpdateCartItemDto;
 import com.example.demo.dto.shoppingcart.ShoppingCartResponseDto;
 import com.example.demo.mapper.shoppingcart.ShoppingCartMapper;
-import com.example.demo.model.CartItem;
-import com.example.demo.model.ShoppingCart;
 import com.example.demo.model.User;
 import com.example.demo.service.shoppingcart.ShoppingCartService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -65,10 +63,8 @@ public class ShoppingCartController {
                                                       UpdateCartItemDto
                                                               updateCartItemDto,
                                                       @AuthenticationPrincipal User user) {
-        CartItemRequestDto cartItemRequestDto = new CartItemRequestDto();
-        cartItemRequestDto.setBookId(id);
-        cartItemRequestDto.setQuantity(updateCartItemDto.getQuantity());
-        return shoppingCartService.addCartItemToShoppingCart(cartItemRequestDto, user);
+        return shoppingCartService.addCartItemToShoppingCart(shoppingCartService
+                .updateCartItemDto(updateCartItemDto, id), user);
     }
 
     @Operation(summary = "Delete cart item by ID")
@@ -80,10 +76,6 @@ public class ShoppingCartController {
     @DeleteMapping("items{id}")
     public void deleteCartItemInShoppingCart(@PathVariable Long id,
                                              @AuthenticationPrincipal User user) {
-        ShoppingCart shoppingCart = shoppingCartMapper.toEntityFromResponseDto(shoppingCartService
-                .getShoppingCartByUserId(user.getId()));
-        CartItem cartItem = shoppingCartService.findByCartItemIdAndShoppingCartId(id,
-                shoppingCart.getId());
-        shoppingCartService.deleteCartItemInShoppingCart(shoppingCart, cartItem);
+        shoppingCartService.deleteCartItemInShoppingCart(user, id);
     }
 }
