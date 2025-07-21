@@ -13,8 +13,6 @@ public interface BookService {
 
     BookDto getBookById(Long id);
 
-    boolean checkIfBookExists(Long id);
-
     void deleteById(Long id);
 
     BookDto updateBook(Long id, CreateBookRequestDto requestBook);

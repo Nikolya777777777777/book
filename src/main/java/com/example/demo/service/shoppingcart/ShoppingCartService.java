@@ -1,5 +1,6 @@
 package com.example.demo.service.shoppingcart;
 
+import com.example.demo.dto.cartitem.CartItemRequestDto;
 import com.example.demo.dto.shoppingcart.ShoppingCartResponseDto;
 import com.example.demo.model.CartItem;
 import com.example.demo.model.ShoppingCart;
@@ -9,9 +10,14 @@ public interface ShoppingCartService {
 
     ShoppingCartResponseDto getShoppingCartByUserId(Long id);
 
-    ShoppingCartResponseDto addCartItemToShoppingCart(CartItem cartItem, ShoppingCart shoppingCart);
+    ShoppingCartResponseDto addCartItemToShoppingCart(CartItemRequestDto cartItemRequestDto,
+                                                      User user);
 
-    boolean deleteCartItemInShoppingCart(ShoppingCart shoppingCart, Long cartItemId);
+    CartItem checkIfBookWithIdExistsInShoppingCart(ShoppingCart shoppingCart, Long cartItemId);
 
-    void createShoppingCartForUser(User user);
+    void deleteCartItemInShoppingCart(ShoppingCart shoppingCart, CartItem cartItem);
+
+    void updateShoppingCartForUser(User user);
+
+    CartItem findByCartItemIdAndShoppingCartId(Long cartItemId, Long shoppingCartId);
 }
