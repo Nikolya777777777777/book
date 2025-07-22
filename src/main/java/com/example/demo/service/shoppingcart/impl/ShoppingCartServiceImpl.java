@@ -11,6 +11,7 @@ import com.example.demo.model.CartItem;
 import com.example.demo.model.ShoppingCart;
 import com.example.demo.model.User;
 import com.example.demo.repository.book.BookRepository;
+import com.example.demo.repository.cartitem.CartItemRepository;
 import com.example.demo.repository.shoppingcart.ShoppingCartRepository;
 import com.example.demo.service.shoppingcart.ShoppingCartService;
 import java.util.Optional;
@@ -27,6 +28,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private final ShoppingCartMapper shoppingCartMapper;
     private final CartItemMapper cartItemMapper;
     private final BookRepository bookRepository;
+    private final CartItemRepository cartItemRepository;
 
     @Override
     public ShoppingCartResponseDto getShoppingCartByUserId(Long id) {
@@ -44,17 +46,18 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ShoppingCart shoppingCart = shoppingCartRepository.getShoppingCartByUserId(user.getId())
                 .orElseThrow(() -> new EntityNotFoundException("Can not find "
                         + "shoppingCart with user id: " + user.getId()));
-        Set<CartItem> cartItems = shoppingCart.getCartItems();
-        CartItem cartItem = checkIfBookWithIdExistsInShoppingCart(shoppingCart,
-                cartItemRequestDto.getBookId());
-        if (cartItem != null) {
-            cartItem.setQuantity(cartItemRequestDto.getQuantity());
+        Optional<CartItem> optionalCartItem = cartItemRepository
+                .findByShoppingCartIdAndBookId(shoppingCart.getId(),
+                        cartItemRequestDto.getBookId());
+        if (optionalCartItem.isPresent()) {
+            CartItem existingItem = optionalCartItem.get();
+            existingItem.setQuantity(cartItemRequestDto.getQuantity());
+            cartItemRepository.save(existingItem);
         } else {
             CartItem newCartItem = cartItemMapper.toEntity(cartItemRequestDto);
             newCartItem.setShoppingCart(shoppingCart);
-            cartItems.add(newCartItem);
+            cartItemRepository.save(newCartItem);
         }
-        shoppingCart.setCartItems(cartItems);
         return shoppingCartMapper.toResponseDto(shoppingCartRepository.save(shoppingCart));
     }
 
