@@ -3,7 +3,6 @@ package com.example.demo.controller;
 import com.example.demo.dto.cartitem.CartItemRequestDto;
 import com.example.demo.dto.cartitem.UpdateCartItemDto;
 import com.example.demo.dto.shoppingcart.ShoppingCartResponseDto;
-import com.example.demo.mapper.shoppingcart.ShoppingCartMapper;
 import com.example.demo.model.User;
 import com.example.demo.service.shoppingcart.ShoppingCartService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,7 +29,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ShoppingCartController {
     private final ShoppingCartService shoppingCartService;
-    private final ShoppingCartMapper shoppingCartMapper;
 
     @Operation(summary = "Get current user's shopping cart")
     @ApiResponse(responseCode = "200", description = "Shopping cart retrieved successfully")
