@@ -62,18 +62,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public CartItem checkIfBookWithIdExistsInShoppingCart(ShoppingCart shoppingCart,
-                                                          Long cartItemId) {
-        Set<CartItem> cartItems = shoppingCart.getCartItems();
-        for (CartItem cartItem : cartItems) {
-            if (cartItem.getBook().getId().equals(cartItemId)) {
-                return cartItem;
-            }
-        }
-        return null;
-    }
-
-    @Override
     public void deleteCartItemInShoppingCart(User user, Long id) {
         ShoppingCart shoppingCart = shoppingCartRepository.getShoppingCartByUserId(user.getId())
                 .orElseThrow(() -> new EntityNotFoundException("Can not find "

@@ -14,8 +14,6 @@ public interface ShoppingCartService {
     ShoppingCartResponseDto addCartItemToShoppingCart(CartItemRequestDto cartItemRequestDto,
                                                       User user);
 
-    CartItem checkIfBookWithIdExistsInShoppingCart(ShoppingCart shoppingCart, Long cartItemId);
-
     void deleteCartItemInShoppingCart(User user, Long id);
 
     void createShoppingCartForUser(User user);
