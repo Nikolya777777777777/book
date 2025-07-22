@@ -4,7 +4,6 @@ import com.example.demo.dto.cartitem.CartItemRequestDto;
 import com.example.demo.dto.cartitem.UpdateCartItemDto;
 import com.example.demo.dto.shoppingcart.ShoppingCartResponseDto;
 import com.example.demo.model.CartItem;
-import com.example.demo.model.ShoppingCart;
 import com.example.demo.model.User;
 
 public interface ShoppingCartService {
