@@ -62,7 +62,7 @@ public class ShoppingCartController {
                                                               updateCartItemDto,
                                                       @AuthenticationPrincipal User user) {
         return shoppingCartService.addCartItemToShoppingCart(shoppingCartService
-                .updateCartItemDto(updateCartItemDto, id), user);
+                .updateCartItemDto(id, user.getId(), updateCartItemDto), user);
     }
 
     @Operation(summary = "Delete cart item by ID")
