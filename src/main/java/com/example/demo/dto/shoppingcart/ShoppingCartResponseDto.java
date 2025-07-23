@@ -7,6 +7,6 @@ import lombok.Data;
 @Data
 public class ShoppingCartResponseDto {
     private Long id;
-    private Long bookId;
+    private Long userId;
     private List<CartItemResponseDto> cartItems;
 }
