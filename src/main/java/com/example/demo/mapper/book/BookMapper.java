@@ -2,7 +2,6 @@ package com.example.demo.mapper.book;
 
 import com.example.demo.config.MapperConfig;
 import com.example.demo.dto.book.BookDto;
-import com.example.demo.dto.book.BookDtoWithoutCategoriesIds;
 import com.example.demo.dto.book.CreateBookRequestDto;
 import com.example.demo.model.Book;
 import com.example.demo.model.Category;
@@ -34,9 +33,7 @@ public interface BookMapper {
     default void setCategories(CreateBookRequestDto bookDto, @MappingTarget Book book) {
         Set<Category> categories = bookDto.getCategoriesIds().stream()
                 .map(Category::new)
-                .collect(Collectors.toUnmodifiableSet());
+                .collect(Collectors.toSet());
         book.setCategories(categories);
     }
-
-    BookDtoWithoutCategoriesIds toDtoWithoutCategories(Book book);
 }
