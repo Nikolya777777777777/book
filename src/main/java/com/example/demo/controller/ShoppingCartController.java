@@ -55,7 +55,7 @@ public class ShoppingCartController {
             @ApiResponse(responseCode = "200", description = "Cart item updated successfully"),
             @ApiResponse(responseCode = "404", description = "Cart item not found")
     })
-    @PutMapping("/items{id}")
+    @PutMapping("/items/{id}")
     public ShoppingCartResponseDto updateCartItemInShoppingCart(@PathVariable Long id,
                                                       @RequestBody @Valid
                                                       UpdateCartItemDto
@@ -71,7 +71,7 @@ public class ShoppingCartController {
             @ApiResponse(responseCode = "404", description = "Cart item not found")
     })
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("items{id}")
+    @DeleteMapping("items/{id}")
     public void deleteCartItemInShoppingCart(@PathVariable Long id,
                                              @AuthenticationPrincipal User user) {
         shoppingCartService.deleteCartItemInShoppingCart(user, id);

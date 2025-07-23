@@ -66,7 +66,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ShoppingCart shoppingCart = shoppingCartRepository.getShoppingCartByUserId(user.getId())
                 .orElseThrow(() -> new EntityNotFoundException("Can not find "
                         + "shoppingCart with user id: " + user.getId()));
-        CartItem cartItem = cartItemRepository.findByShoppingCartIdAndBookId(id,
+        CartItem cartItem = cartItemRepository.findByShoppingCartIdAndBookId(shoppingCart.getId(),
                         shoppingCart.getId())
                 .orElseThrow(() -> new EntityNotFoundException("Can not find cartItem with id: "
                         + id + " in shoppingCart with user id: " + user.getId()));
@@ -88,7 +88,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ShoppingCart shoppingCart = shoppingCartRepository.getShoppingCartByUserId(userId)
                 .orElseThrow(() -> new EntityNotFoundException("Can not find shoppingCart with "
                         + "user id: " + userId));
-        CartItem cartItem = cartItemRepository.findByShoppingCartIdAndBookId(cartItemId,
+        CartItem cartItem = cartItemRepository.findByShoppingCartIdAndBookId(shoppingCart.getId(),
                         shoppingCart.getId())
                 .map(newCartItem -> {
                     newCartItem.setQuantity(updateCartItemDto.getQuantity());
