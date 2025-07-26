@@ -39,18 +39,20 @@ public class OrderServiceImpl implements OrderService {
     public OrderResponseDto createOrder(OrderRequestDto orderRequestDto, User user) {
         ShoppingCart shoppingCart = shoppingCartRepository
                 .findByUserId(user.getId())
-                .orElseThrow(() -> new EntityNotFoundException("Can not find shoppingCart with user id: " + user.getId()));
-        Set<CartItem> cartItems = cartItemRepository
-                .getAllCartItemsByShoppingCartId(shoppingCart.getId())
-                .orElseThrow(() -> new EntityNotFoundException("Can not find cartItems by shoppingCart id: " + shoppingCart.getId()));
-        BigDecimal totalPrice = BigDecimal.ZERO;
+                .orElseThrow(() -> new EntityNotFoundException("Can "
+                        + "not find shoppingCart with user id: " + user.getId()));
         Set<OrderItem> orderItems = new HashSet<>();
         Order order = new Order();
+        BigDecimal totalPrice = BigDecimal.ZERO;
         order.setUser(user);
         order.setShippingAddress(orderRequestDto.getShippingAddress());
         order.setOrderDate(LocalDateTime.now());
         order.setTotal(totalPrice);
         order.setStatus(Status.PENDING);
+        Set<CartItem> cartItems = cartItemRepository
+                .getAllCartItemsByShoppingCartId(shoppingCart.getId())
+                .orElseThrow(() -> new EntityNotFoundException("Can "
+                        + "not find cartItems by shoppingCart id: " + shoppingCart.getId()));
         for (CartItem cartItem : cartItems) {
             OrderItem orderItem = orderItemMapper.convertCartItemToOrderItem(cartItem);
             totalPrice = totalPrice.add(cartItem.getBook().getPrice());
@@ -64,12 +66,15 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Set<OrderResponseDto> getByAllOrdersByUserId(Long userId) {
         Set<Order> orders = orderRepository.findAllOrdersByUserId(userId)
-                .orElseThrow(() -> new EntityNotFoundException("Can not find order by user id: " + userId));
+                .orElseThrow(() -> new EntityNotFoundException("Can "
+                        + "not find order by user id: " + userId));
         return orders.stream().map(orderMapper::toOrderResponseDto).collect(Collectors.toSet());
     }
 
     @Override
-    public OrderResponseDto updateOrderStatus(UpdateOrderStatusRequestDto updateOrderStatusRequestDto, Long orderId, User user) {
+    public OrderResponseDto updateOrderStatus(
+            UpdateOrderStatusRequestDto updateOrderStatusRequestDto,
+                                              Long orderId, User user) {
         Order order = orderRepository.findOrderWithIdByUserId(user.getId(), orderId)
                 .orElseThrow(() -> new EntityNotFoundException("Can not find order with id: "
                         + orderId + " and by user id: " + user.getId()));
