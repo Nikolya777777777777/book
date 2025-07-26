@@ -33,7 +33,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public ShoppingCartResponseDto getShoppingCartByUserId(Long id) {
         return shoppingCartMapper.toResponseDto(shoppingCartRepository
-                .getShoppingCartByUserId(id).orElseThrow(() -> new EntityNotFoundException("Can "
+                .findByUserId(id)
+                .orElseThrow(() -> new EntityNotFoundException("Can "
                         + "not find shoppingCart with user id: " + id)));
     }
 
@@ -43,7 +44,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         Book book = bookRepository.findById(cartItemRequestDto.getBookId()).orElseThrow(
                 () -> new EntityNotFoundException("Can not find book with id: "
                         + cartItemRequestDto.getBookId()));
-        ShoppingCart shoppingCart = shoppingCartRepository.getShoppingCartByUserId(user.getId())
+        ShoppingCart shoppingCart = shoppingCartRepository
+                .findByUserId(user.getId())
                 .orElseThrow(() -> new EntityNotFoundException("Can not find "
                         + "shoppingCart with user id: " + user.getId()));
         Optional<CartItem> optionalCartItem = cartItemRepository
@@ -63,7 +65,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void deleteCartItemInShoppingCart(User user, Long id) {
-        ShoppingCart shoppingCart = shoppingCartRepository.getShoppingCartByUserId(user.getId())
+        ShoppingCart shoppingCart = shoppingCartRepository
+                .findByUserId(user.getId())
                 .orElseThrow(() -> new EntityNotFoundException("Can not find "
                         + "shoppingCart with user id: " + user.getId()));
         CartItem cartItem = cartItemRepository.findByShoppingCartIdAndBookId(shoppingCart.getId(),
@@ -85,7 +88,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public CartItemRequestDto updateCartItemDto(Long cartItemId, Long userId,
                                                 UpdateCartItemDto updateCartItemDto) {
-        ShoppingCart shoppingCart = shoppingCartRepository.getShoppingCartByUserId(userId)
+        ShoppingCart shoppingCart = shoppingCartRepository
+                .findByUserId(userId)
                 .orElseThrow(() -> new EntityNotFoundException("Can not find shoppingCart with "
                         + "user id: " + userId));
         CartItem cartItem = cartItemRepository.findByShoppingCartIdAndBookId(shoppingCart.getId(),
