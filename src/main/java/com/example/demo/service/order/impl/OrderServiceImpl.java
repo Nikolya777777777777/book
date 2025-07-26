@@ -1,8 +1,10 @@
 package com.example.demo.service.order.impl;
 
+import com.example.demo.dto.order.OrderItemSummaryDto;
 import com.example.demo.dto.order.OrderRequestDto;
 import com.example.demo.dto.order.OrderResponseDto;
 import com.example.demo.dto.order.UpdateOrderStatusRequestDto;
+import com.example.demo.dto.orderitem.OrderItemsResponseDto;
 import com.example.demo.exception.EntityNotFoundException;
 import com.example.demo.mapper.order.OrderMapper;
 import com.example.demo.mapper.orderitem.OrderItemMapper;
@@ -14,6 +16,7 @@ import com.example.demo.model.User;
 import com.example.demo.model.enums.Status;
 import com.example.demo.repository.cartitem.CartItemRepository;
 import com.example.demo.repository.order.OrderRepository;
+import com.example.demo.repository.orderitem.OrderItemRepository;
 import com.example.demo.repository.shoppingcart.ShoppingCartRepository;
 import com.example.demo.service.order.OrderService;
 import java.math.BigDecimal;
@@ -34,6 +37,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderItemMapper orderItemMapper;
     private final OrderMapper orderMapper;
     private final OrderRepository orderRepository;
+    private final OrderItemRepository orderItemRepository;
 
     @Override
     public OrderResponseDto createOrder(OrderRequestDto orderRequestDto, User user) {
@@ -41,25 +45,12 @@ public class OrderServiceImpl implements OrderService {
                 .findByUserId(user.getId())
                 .orElseThrow(() -> new EntityNotFoundException("Can "
                         + "not find shoppingCart with user id: " + user.getId()));
-        Set<OrderItem> orderItems = new HashSet<>();
-        Order order = new Order();
+        Order order = setUpNewOrder(orderRequestDto, user);
         BigDecimal totalPrice = BigDecimal.ZERO;
-        order.setUser(user);
-        order.setShippingAddress(orderRequestDto.getShippingAddress());
-        order.setOrderDate(LocalDateTime.now());
-        order.setTotal(totalPrice);
-        order.setStatus(Status.PENDING);
-        Set<CartItem> cartItems = cartItemRepository
-                .getAllCartItemsByShoppingCartId(shoppingCart.getId())
-                .orElseThrow(() -> new EntityNotFoundException("Can "
-                        + "not find cartItems by shoppingCart id: " + shoppingCart.getId()));
-        for (CartItem cartItem : cartItems) {
-            OrderItem orderItem = orderItemMapper.convertCartItemToOrderItem(cartItem);
-            totalPrice = totalPrice.add(cartItem.getBook().getPrice());
-            orderItem.setOrder(order);
-            orderItems.add(orderItem);
-        }
-        order.setOrderItems(orderItems);
+        OrderItemSummaryDto orderItemSummaryDto = convertCartItemsToOrderItems(shoppingCart,
+                order, totalPrice);
+        order.setTotal(orderItemSummaryDto.getTotalPrice());
+        order.setOrderItems(orderItemSummaryDto.getOrderItems());
         return orderMapper.toOrderResponseDto(orderRepository.save(order));
     }
 
@@ -81,5 +72,51 @@ public class OrderServiceImpl implements OrderService {
         order.setStatus(updateOrderStatusRequestDto.getStatus());
         orderRepository.save(order);
         return orderMapper.toOrderResponseDto(orderRepository.save(order));
+    }
+
+    @Override
+    public Set<OrderItemsResponseDto> getAllOrderItemsInOrder(Long orderId, Long userId) {
+        Order order = orderRepository.findOrderWithIdByUserId(userId, orderId)
+                .orElseThrow(() -> new EntityNotFoundException("Can not find order with id: "
+                        + orderId + " and by user id: " + userId));
+        return order.getOrderItems()
+                .stream()
+                .map(orderItemMapper::toResponseDto)
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public OrderItemsResponseDto getOrderItemInOrder(Long orderId, Long orderItemId, Long userId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new EntityNotFoundException("Can not find order with id: "
+                        + orderId + " and by user id: " + userId));
+        orderItemRepository.findOrderItemByIdInOrderById(orderId, orderItemId);
+        return null;
+    }
+
+    private Order setUpNewOrder(OrderRequestDto orderRequestDto, User user) {
+        Order order = new Order();
+        order.setUser(user);
+        order.setShippingAddress(orderRequestDto.getShippingAddress());
+        order.setOrderDate(LocalDateTime.now());
+        order.setTotal(BigDecimal.ZERO);
+        order.setStatus(Status.PENDING);
+        return order;
+    }
+
+    private OrderItemSummaryDto convertCartItemsToOrderItems(ShoppingCart shoppingCart,
+                                                             Order order, BigDecimal totalPrice) {
+        Set<CartItem> cartItems = cartItemRepository
+                .getAllCartItemsByShoppingCartId(shoppingCart.getId())
+                .orElseThrow(() -> new EntityNotFoundException("Can "
+                        + "not find cartItems by shoppingCart id: " + shoppingCart.getId()));
+        Set<OrderItem> orderItems = new HashSet<>();
+        for (CartItem cartItem : cartItems) {
+            OrderItem orderItem = orderItemMapper.convertCartItemToOrderItem(cartItem);
+            totalPrice = totalPrice.add(cartItem.getBook().getPrice());
+            orderItem.setOrder(order);
+            orderItems.add(orderItem);
+        }
+        return new OrderItemSummaryDto(orderItems, totalPrice);
     }
 }
