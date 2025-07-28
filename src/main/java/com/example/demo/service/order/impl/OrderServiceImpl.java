@@ -45,6 +45,7 @@ public class OrderServiceImpl implements OrderService {
                 .findByUserId(user.getId())
                 .orElseThrow(() -> new EntityNotFoundException("Can "
                         + "not find shoppingCart with user id: " + user.getId()));
+        checkIfChoppingCartContainsCartItems(shoppingCart);
         Order order = setUpNewOrder(orderRequestDto, user);
         BigDecimal totalPrice = BigDecimal.ZERO;
         OrderItemSummaryDto orderItemSummaryDto = convertCartItemsToOrderItems(shoppingCart,
@@ -90,8 +91,10 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new EntityNotFoundException("Can not find order with id: "
                         + orderId + " and by user id: " + userId));
-        orderItemRepository.findOrderItemByIdInOrderById(orderId, orderItemId);
-        return null;
+        return orderItemMapper.toResponseDto(orderItemRepository
+                .findOrderItemByIdInOrderById(orderId, orderItemId)
+                .orElseThrow(() -> new EntityNotFoundException("Can "
+                        + "not find orderItem with id: ")));
     }
 
     private Order setUpNewOrder(OrderRequestDto orderRequestDto, User user) {
@@ -118,5 +121,17 @@ public class OrderServiceImpl implements OrderService {
             orderItems.add(orderItem);
         }
         return new OrderItemSummaryDto(orderItems, totalPrice);
+    }
+
+    public void checkIfChoppingCartContainsCartItems(ShoppingCart shoppingCart) {
+        boolean hasCartItems = cartItemRepository
+                .getAllCartItemsByShoppingCartId(shoppingCart.getId())
+                .map(cartItems -> !cartItems.isEmpty())
+                .orElse(false);
+
+        if (!hasCartItems) {
+            throw new EntityNotFoundException("Shopping cart is empty for user id: "
+                    + shoppingCart.getUser().getId());
+        }
     }
 }

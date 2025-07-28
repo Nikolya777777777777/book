@@ -1,13 +1,13 @@
 package com.example.demo.dto.order;
 
 import com.example.demo.model.enums.Status;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 public class UpdateOrderStatusRequestDto {
-    @NotBlank
+    @NotNull
     private Status status;
 }
