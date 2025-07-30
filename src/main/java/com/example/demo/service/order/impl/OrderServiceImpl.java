@@ -45,11 +45,13 @@ public class OrderServiceImpl implements OrderService {
                 .findByUserId(user.getId())
                 .orElseThrow(() -> new EntityNotFoundException("Can "
                         + "not find shoppingCart with user id: " + user.getId()));
-        checkIfChoppingCartContainsCartItems(shoppingCart);
+        Set<CartItem> cartItem = cartItemRepository
+                .getAllCartItemsByShoppingCartId(shoppingCart.getId())
+                .orElseThrow(() -> new EntityNotFoundException("List of "
+                        + "cart items is clear in shoppingCart with id: " + shoppingCart.getId()));
         Order order = setUpNewOrder(orderRequestDto, user);
-        BigDecimal totalPrice = BigDecimal.ZERO;
         OrderItemSummaryDto orderItemSummaryDto = convertCartItemsToOrderItems(shoppingCart,
-                order, totalPrice);
+                order, BigDecimal.ZERO);
         order.setTotal(orderItemSummaryDto.getTotalPrice());
         order.setOrderItems(orderItemSummaryDto.getOrderItems());
         return orderMapper.toOrderResponseDto(orderRepository.save(order));
@@ -121,17 +123,5 @@ public class OrderServiceImpl implements OrderService {
             orderItems.add(orderItem);
         }
         return new OrderItemSummaryDto(orderItems, totalPrice);
-    }
-
-    public void checkIfChoppingCartContainsCartItems(ShoppingCart shoppingCart) {
-        boolean hasCartItems = cartItemRepository
-                .getAllCartItemsByShoppingCartId(shoppingCart.getId())
-                .map(cartItems -> !cartItems.isEmpty())
-                .orElse(false);
-
-        if (!hasCartItems) {
-            throw new EntityNotFoundException("Shopping cart is empty for user id: "
-                    + shoppingCart.getUser().getId());
-        }
     }
 }
