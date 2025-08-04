@@ -1,5 +1,3 @@
-version: "3.8"
-
 volumes:
   mysql_data:
 
@@ -30,5 +28,5 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://db:$MYSQLDB_DOCKER_PORT/${MYSQLDB_DATABASE}
       SPRING_DATASOURCE_USERNAME: ${MYSQLDB_USER}
-      SPRING_DATASOURCE_PASSWORD: ${MYSQLDB_PASSWORD}
+      SPRING_DATASOURCE_PASSWORD: ${MYSQLDB_ROOT_PASSWORD}
       JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:${DEBUG_PORT}"
