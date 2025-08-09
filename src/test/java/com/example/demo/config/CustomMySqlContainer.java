@@ -25,6 +25,7 @@ public class CustomMySqlContainer extends MySQLContainer<CustomMySqlContainer> {
         System.setProperty("TEST_DB_USERNAME", mysqlContainer.getUsername());
         System.setProperty("TEST_DB_PASSWORD", mysqlContainer.getPassword());
     }
+
     @Override
     public void stop() {
     }

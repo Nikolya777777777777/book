@@ -1,13 +1,34 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.book.BookDto;
+import com.example.demo.dto.book.CreateBookRequestDto;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import org.testcontainers.shaded.org.apache.commons.lang3.builder.EqualsBuilder;
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Set;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class BookControllerTest {
@@ -24,5 +45,101 @@ public class BookControllerTest {
                 .build();
     }
 
+    @Test
+    @WithMockUser(username = "user", roles = {"USER"})
+    @DisplayName("""
+            Get page of all existing books
+            """)
+    @Sql(scripts = {
+            "classpath:database/bookController/category/add-category-to-category-table.sql",
+            "classpath:database/bookController/book/add-new-book-to-book-table.sql",
+            "classpath:database/bookController/booksCategories/add-books-categories-record-into-book-categories-table.sql"
+    }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {
+            "classpath:database/drop/drop-books-categories-table.sql",
+            "classpath:database/drop/drop-categories-table.sql",
+            "classpath:database/drop/drop-books-table.sql"
 
+    }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    public void getAllBooks_WithoutParams_ReturnPageOfBookDto() throws Exception {
+        BookDto bookDto = new BookDto()
+                .setId(1L)
+                .setAuthor("Shevchenko")
+                .setTitle("Maria")
+                .setIsbn("123-456-7890")
+                .setCategoryIds(Set.of(1L))
+                .setPrice(BigDecimal.valueOf(100))
+                .setDescription("interesting book")
+                .setCoverImage("blue");
+
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<BookDto> expected = new  PageImpl<>(List.of(bookDto), pageable, 1);
+
+        MvcResult result = mockMvc.perform(get("/books")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        JavaType pageType = objectMapper.getTypeFactory()
+                .constructParametricType(PageImpl.class, BookDto.class);
+
+        PageImpl<BookDto> actual = objectMapper.readValue(result.getResponse().getContentAsString(), pageType);
+
+        Assertions.assertNotNull(actual);
+        Assertions.assertFalse(actual.isEmpty());
+        Assertions.assertEquals(expected.getTotalElements(), actual.getTotalElements());
+        Assertions.assertEquals(expected.getContent().get(0).getId(), actual.getContent().get(0).getId());
+
+
+
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @Sql(scripts = {
+            "classpath:database/create/create-categories-table.sql",
+            "classpath:database/create/create-books-table.sql",
+            "classpath:database/create/create-books-categories-table.sql",
+            "classpath:database/bookController/category/add-category-to-category-table.sql",
+    }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {
+            "classpath:database/drop/drop-books-categories-table.sql",
+            "classpath:database/drop/drop-categories-table.sql",
+            "classpath:database/drop/drop-books-table.sql"
+
+    }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @DisplayName("""
+            Create book by given params and should return BookDto
+            """)
+    public void createBook_ByGivenParams_ReturnBookDto() throws Exception {
+        CreateBookRequestDto  createBookRequestDto = new CreateBookRequestDto()
+                .setAuthor("Shevchenko")
+                .setTitle("Maria")
+                .setIsbn("123-456-7890")
+                .setCategoriesIds(Set.of(1L))
+                .setPrice(BigDecimal.valueOf(100))
+                .setCoverImage("blue");
+
+        BookDto expected = new BookDto()
+                .setId(1L)
+                .setAuthor("Shevchenko")
+                .setTitle("Maria")
+                .setIsbn("123-456-7890")
+                .setCategoryIds(Set.of(1L))
+                .setPrice(BigDecimal.valueOf(100))
+                .setCoverImage("blue");
+
+        String jsonRequest = objectMapper.writeValueAsString(createBookRequestDto);
+
+        MvcResult result = mockMvc.perform(post("/books")
+                .content(jsonRequest)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andReturn();
+
+        BookDto actual = objectMapper.readValue(result.getResponse().getContentAsString(), BookDto.class);
+        Assertions.assertNotNull(actual);
+        Assertions.assertNotNull(actual.getId());
+        Assertions.assertTrue(EqualsBuilder.reflectionEquals(expected, actual));
+    }
 }

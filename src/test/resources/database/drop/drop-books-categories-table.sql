@@ -1,0 +1,1 @@
+drop table IF EXISTS books_categories;

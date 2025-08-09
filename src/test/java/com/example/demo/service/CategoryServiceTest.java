@@ -31,6 +31,7 @@ public class CategoryServiceTest {
 
     @Mock
     private CategoryMapper categoryMapper;
+
     @InjectMocks
     private CategoryServiceImpl categoryService;
 

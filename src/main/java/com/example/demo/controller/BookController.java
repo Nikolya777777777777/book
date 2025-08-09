@@ -39,6 +39,7 @@ public class BookController {
             @ApiResponse(responseCode = "403", description = "User is not authenticated"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping
     public Page<BookDto> getAll(Pageable pageable) {
         return bookService.getAll(pageable);
