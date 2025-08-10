@@ -4,10 +4,8 @@ import com.example.demo.dto.book.BookDto;
 import com.example.demo.dto.book.CreateBookRequestDto;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import jakarta.persistence.EntityManager;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
@@ -37,12 +35,47 @@ public class BookControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private EntityManager entityManager;
+
+    @BeforeEach
+    void reset() {
+        // тут виконуєш свої SQL-скрипти (через @Sql або вручну)
+
+        entityManager.clear(); // очищає кеш першого рівня
+    }
+
+
     @BeforeAll
     static void beforeAll(@Autowired WebApplicationContext applicationContext) {
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(applicationContext)
                 .apply(springSecurity())
                 .build();
+    }
+
+    @BeforeEach
+    @Sql(scripts = {
+            "classpath:database/drop/drop-books-categories-table.sql",
+            "classpath:database/drop/drop-cart-items-table.sql",
+            "classpath:database/drop/drop-users-roles-table.sql",
+            "classpath:database/drop/drop-shopping-carts-table.sql",
+            "classpath:database/drop/drop-roles-table.sql",
+            "classpath:database/drop/drop-users-table.sql",
+            "classpath:database/drop/drop-categories-table.sql",
+            "classpath:database/drop/drop-books-table.sql",
+            "classpath:database/drop/drop-databasechangelog-table.sql",
+            "classpath:database/drop/drop-databasechangeloglock-table.sql",
+            "classpath:database/create/create-books-table.sql",
+            "classpath:database/create/create-categories-table.sql",
+            "classpath:database/create/create-roles-table.sql",
+            "classpath:database/create/create-users-table.sql",
+            "classpath:database/create/create-shopping-carts-table.sql",
+            "classpath:database/create/create-users-roles-table.sql",
+            "classpath:database/create/create-cart-items-table.sql",
+            "classpath:database/create/create-books-categories-table.sql"
+    }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    void resetDatabase() {
     }
 
     @Test
@@ -55,12 +88,6 @@ public class BookControllerTest {
             "classpath:database/bookController/book/add-new-book-to-book-table.sql",
             "classpath:database/bookController/booksCategories/add-books-categories-record-into-book-categories-table.sql"
     }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {
-            "classpath:database/drop/drop-books-categories-table.sql",
-            "classpath:database/drop/drop-categories-table.sql",
-            "classpath:database/drop/drop-books-table.sql"
-
-    }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void getAllBooks_WithoutParams_ReturnPageOfBookDto() throws Exception {
         BookDto bookDto = new BookDto()
                 .setId(1L)
@@ -80,34 +107,29 @@ public class BookControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        JavaType pageType = objectMapper.getTypeFactory()
-                .constructParametricType(PageImpl.class, BookDto.class);
+        JavaType type = objectMapper.getTypeFactory()
+                .constructParametricType(PageResponse.class, BookDto.class);
 
-        PageImpl<BookDto> actual = objectMapper.readValue(result.getResponse().getContentAsString(), pageType);
+        PageResponse<BookDto> actual = objectMapper.readValue(
+                result.getResponse().getContentAsString(), type
+        );
 
         Assertions.assertNotNull(actual);
-        Assertions.assertFalse(actual.isEmpty());
-        Assertions.assertEquals(expected.getTotalElements(), actual.getTotalElements());
-        Assertions.assertEquals(expected.getContent().get(0).getId(), actual.getContent().get(0).getId());
+        Assertions.assertFalse(actual.content.isEmpty());
+        Assertions.assertEquals(expected.getTotalElements(), actual.totalElements);
+        Assertions.assertEquals(expected.getContent().get(0).getId(), actual.content.get(0).getId());
+    }
 
-
-
+    public static class PageResponse<T> {
+        public List<T> content;
+        public long totalElements;
     }
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     @Sql(scripts = {
-            "classpath:database/create/create-categories-table.sql",
-            "classpath:database/create/create-books-table.sql",
-            "classpath:database/create/create-books-categories-table.sql",
-            "classpath:database/bookController/category/add-category-to-category-table.sql",
+            "classpath:database/bookController/category/add-category-to-category-table.sql"
     }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {
-            "classpath:database/drop/drop-books-categories-table.sql",
-            "classpath:database/drop/drop-categories-table.sql",
-            "classpath:database/drop/drop-books-table.sql"
-
-    }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @DisplayName("""
             Create book by given params and should return BookDto
             """)
