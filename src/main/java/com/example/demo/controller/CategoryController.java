@@ -107,6 +107,7 @@ public class CategoryController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{id}")
     public CategoryResponseDto updateCategory(@PathVariable Long id, @RequestBody
                                                   @Valid CategoryRequestDto categoryRequestDto) {
