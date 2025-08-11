@@ -101,6 +101,7 @@ public class BookController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Books matching search criteria")
     })
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/search")
     public Page<BookDto> searchBooks(@Valid BookSearchParametersDto searchParameters,
                                      Pageable pageable) {

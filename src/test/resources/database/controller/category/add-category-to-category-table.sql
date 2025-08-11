@@ -1,0 +1,1 @@
+insert into categories(id, name, description, is_deleted) values (100, 'Detective', 'about spies', false);
