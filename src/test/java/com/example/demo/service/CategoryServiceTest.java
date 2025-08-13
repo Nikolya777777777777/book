@@ -60,9 +60,9 @@ public class CategoryServiceTest {
         CategoryResponseDto responseDto = categoryService.createCategory(categoryRequestDto);
 
         assertThat(responseDto.getName()).isEqualTo(category.getName());
-        verify(categoryMapper, times(1)).toEntity(categoryRequestDto);
-        verify(categoryMapper, times(1)).toResponseDto(category);
-        verify(categoryRepository, times(1)).save(category);
+        verify(categoryMapper).toEntity(categoryRequestDto);
+        verify(categoryMapper).toResponseDto(category);
+        verify(categoryRepository).save(category);
         verifyNoMoreInteractions(categoryRepository,  categoryMapper);
     }
 
@@ -87,8 +87,8 @@ public class CategoryServiceTest {
         CategoryResponseDto responseDto = categoryService.findCategoryById(category.getId());
 
         assertThat(responseDto.getName()).isEqualTo(category.getName());
-        verify(categoryMapper, times(1)).toResponseDto(category);
-        verify(categoryRepository, times(1)).findById(category.getId());
+        verify(categoryMapper).toResponseDto(category);
+        verify(categoryRepository).findById(category.getId());
         verifyNoMoreInteractions(categoryRepository,  categoryMapper);
     }
 
@@ -109,7 +109,7 @@ public class CategoryServiceTest {
         );
 
         assertThat(exception.getMessage()).isEqualTo(expected);
-        verify(categoryRepository, times(1)).findById(categoryId);
+        verify(categoryRepository).findById(categoryId);
         verifyNoMoreInteractions(categoryRepository);
     }
 
@@ -139,10 +139,10 @@ public class CategoryServiceTest {
         CategoryResponseDto responseDto = categoryService.updateCategory(category.getId(), categoryRequestDto);
 
         assertThat(responseDto.getName()).isEqualTo(categoryRequestDto.getName());
-        verify(categoryMapper, times(1)).toResponseDto(category);
-        verify(categoryMapper, times(1)).updateCategoryFromDb(categoryRequestDto, category);
-        verify(categoryRepository, times(1)).findById(category.getId());
-        verify(categoryRepository, times(1)).save(category);
+        verify(categoryMapper).toResponseDto(category);
+        verify(categoryMapper).updateCategoryFromDb(categoryRequestDto, category);
+        verify(categoryRepository).findById(category.getId());
+        verify(categoryRepository).save(category);
         verifyNoMoreInteractions(categoryRepository,  categoryMapper);
     }
 
@@ -163,7 +163,7 @@ public class CategoryServiceTest {
         );
 
         assertThat(exception.getMessage()).isEqualTo(expected);
-        verify(categoryRepository, times(1)).findById(categoryId);
+        verify(categoryRepository).findById(categoryId);
         verifyNoMoreInteractions(categoryRepository);
     }
 
@@ -181,8 +181,8 @@ public class CategoryServiceTest {
 
         categoryService.deleteCategory(category.getId());
 
-        verify(categoryRepository, times(1)).findById(category.getId());
-        verify(categoryRepository, times(1)).deleteById(category.getId());
+        verify(categoryRepository).findById(category.getId());
+        verify(categoryRepository).deleteById(category.getId());
         verifyNoMoreInteractions(categoryRepository);
     }
 

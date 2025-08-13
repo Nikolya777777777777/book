@@ -82,7 +82,6 @@ public class BookControllerTest {
         );
 
         Assertions.assertNotNull(actual);
-        Assertions.assertFalse(actual.content.isEmpty());
         Assertions.assertEquals(expected.getTotalElements(), actual.totalElements);
         Assertions.assertEquals(expected.getContent().get(0).getId(), actual.content.get(0).getId());
     }
@@ -119,11 +118,6 @@ public class BookControllerTest {
         Assertions.assertNotNull(actual);
         Assertions.assertEquals(expected.getId(), actual.getId());
         Assertions.assertEquals(expected.getIsbn(), actual.getIsbn());
-    }
-
-    public static class PageResponse<T> {
-        public List<T> content;
-        public long totalElements;
     }
 
     @Test
@@ -264,8 +258,12 @@ public class BookControllerTest {
         );
 
         Assertions.assertNotNull(actual);
-        Assertions.assertFalse(actual.content.isEmpty());
         Assertions.assertEquals(expected.getTotalElements(), actual.totalElements);
         Assertions.assertEquals(expected.getContent().get(0).getId(), actual.content.get(0).getId());
+    }
+
+    public static class PageResponse<T> {
+        public List<T> content;
+        public long totalElements;
     }
 }
