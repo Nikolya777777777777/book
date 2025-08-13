@@ -22,6 +22,7 @@ import org.testcontainers.shaded.org.apache.commons.lang3.builder.EqualsBuilder;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -81,9 +82,9 @@ public class BookControllerTest {
                 result.getResponse().getContentAsString(), type
         );
 
-        Assertions.assertNotNull(actual);
-        Assertions.assertEquals(expected.getTotalElements(), actual.totalElements);
-        Assertions.assertEquals(expected.getContent().get(0).getId(), actual.content.get(0).getId());
+        assertNotNull(actual);
+        assertEquals(expected.getTotalElements(), actual.totalElements);
+        assertEquals(expected.getContent().get(0).getId(), actual.content.get(0).getId());
     }
 
     @Test
@@ -115,9 +116,8 @@ public class BookControllerTest {
 
         BookDto actual = objectMapper.readValue(result.getResponse().getContentAsString(), BookDto.class);
 
-        Assertions.assertNotNull(actual);
-        Assertions.assertEquals(expected.getId(), actual.getId());
-        Assertions.assertEquals(expected.getIsbn(), actual.getIsbn());
+        assertNotNull(actual);
+        assertTrue(EqualsBuilder.reflectionEquals(expected, actual));
     }
 
     @Test
@@ -156,9 +156,9 @@ public class BookControllerTest {
                 .andReturn();
 
         BookDto actual = objectMapper.readValue(result.getResponse().getContentAsString(), BookDto.class);
-        Assertions.assertNotNull(actual);
-        Assertions.assertNotNull(actual.getId());
-        Assertions.assertTrue(EqualsBuilder.reflectionEquals(expected, actual, "id"));
+        assertNotNull(actual);
+        assertNotNull(actual.getId());
+        assertTrue(EqualsBuilder.reflectionEquals(expected, actual, "id"));
     }
 
     @Test
@@ -216,8 +216,8 @@ public class BookControllerTest {
                 .andReturn();
 
         BookDto actual = objectMapper.readValue(result.getResponse().getContentAsString(), BookDto.class);
-        Assertions.assertNotNull(actual);
-        Assertions.assertTrue(EqualsBuilder.reflectionEquals(expected, actual));
+        assertNotNull(actual);
+        assertTrue(EqualsBuilder.reflectionEquals(expected, actual));
     }
 
     @Test
@@ -257,9 +257,9 @@ public class BookControllerTest {
                 result.getResponse().getContentAsString(), type
         );
 
-        Assertions.assertNotNull(actual);
-        Assertions.assertEquals(expected.getTotalElements(), actual.totalElements);
-        Assertions.assertEquals(expected.getContent().get(0).getId(), actual.content.get(0).getId());
+        assertNotNull(actual);
+        assertEquals(expected.getTotalElements(), actual.totalElements);
+        assertEquals(expected.getContent().get(0).getId(), actual.content.get(0).getId());
     }
 
     public static class PageResponse<T> {

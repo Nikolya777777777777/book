@@ -26,6 +26,8 @@ import org.testcontainers.shaded.org.apache.commons.lang3.builder.EqualsBuilder;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -85,10 +87,10 @@ public class CategoryControllerTest {
                 result.getResponse().getContentAsString(), type
         );
 
-        Assertions.assertNotNull(actual);
-        Assertions.assertFalse(actual.content.isEmpty());
-        Assertions.assertEquals(expected.getTotalElements(), actual.totalElements);
-        Assertions.assertEquals(expected.getContent().get(0).getId(), actual.content.get(0).getId());
+        assertNotNull(actual);
+        assertFalse(actual.content.isEmpty());
+        assertEquals(expected.getTotalElements(), actual.totalElements);
+        assertEquals(expected.getContent().get(0).getId(), actual.content.get(0).getId());
     }
 
     @Test
@@ -115,8 +117,8 @@ public class CategoryControllerTest {
 
         CategoryResponseDto actual = objectMapper.readValue(result.getResponse().getContentAsString(), CategoryResponseDto.class);
 
-        Assertions.assertNotNull(actual);
-        Assertions.assertTrue(EqualsBuilder.reflectionEquals(expected, actual));
+        assertNotNull(actual);
+        assertTrue(EqualsBuilder.reflectionEquals(expected, actual));
     }
 
     @Test
@@ -149,9 +151,9 @@ public class CategoryControllerTest {
 
         PageResponse<CategoryResponseDto> actual = objectMapper.readValue(result.getResponse().getContentAsString(), type);
 
-        Assertions.assertNotNull(actual);
-        Assertions.assertEquals(expected.getTotalElements(), actual.totalElements);
-        Assertions.assertEquals(expected.getContent().get(0).getId(), actual.content.get(0).getId());
+        assertNotNull(actual);
+        assertEquals(expected.getTotalElements(), actual.totalElements);
+        assertEquals(expected.getContent().get(0).getId(), actual.content.get(0).getId());
     }
 
     @Test
@@ -182,8 +184,8 @@ public class CategoryControllerTest {
 
         CategoryResponseDto actual = objectMapper.readValue(result.getResponse().getContentAsString(), CategoryResponseDto.class);
 
-        Assertions.assertNotNull(actual);
-        Assertions.assertTrue(EqualsBuilder.reflectionEquals(expected, actual));
+        assertNotNull(actual);
+        assertTrue(EqualsBuilder.reflectionEquals(expected, actual));
     }
 
     @Test
@@ -217,8 +219,8 @@ public class CategoryControllerTest {
 
         CategoryResponseDto actual = objectMapper.readValue(result.getResponse().getContentAsString(), CategoryResponseDto.class);
 
-        Assertions.assertNotNull(actual);
-        Assertions.assertTrue(EqualsBuilder.reflectionEquals(expected, actual));
+        assertNotNull(actual);
+        assertTrue(EqualsBuilder.reflectionEquals(expected, actual));
     }
 
     @Test
