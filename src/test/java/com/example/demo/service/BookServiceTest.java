@@ -89,9 +89,9 @@ class BookServiceTest {
 		BookDto savedBookDto = bookService.createBook(requestBook);
 
 		assertThat(savedBookDto).isEqualTo(bookDto);
-		verify(bookRepository, times(1)).save(book);
-		verify(bookMapper, times(1)).toModel(requestBook);
-		verify(bookMapper, times(1)).toDto(book);
+		verify(bookRepository).save(book);
+		verify(bookMapper).toModel(requestBook);
+		verify(bookMapper).toDto(book);
 		verifyNoMoreInteractions(bookRepository,  bookMapper);
 	}
 
@@ -153,9 +153,9 @@ class BookServiceTest {
 		assertThat(actual.getContent().get(0).getId()).isEqualTo(1L);
 		assertThat(actual.getContent().get(1).getId()).isEqualTo(2L);
 
-		verify(bookRepository, times(1)).findAll(pageable);
-		verify(bookMapper, times(1)).toDto(book1);
-		verify(bookMapper, times(1)).toDto(book2);
+		verify(bookRepository).findAll(pageable);
+		verify(bookMapper).toDto(book1);
+		verify(bookMapper).toDto(book2);
 		verifyNoMoreInteractions(bookRepository,  bookMapper);
 	}
 
@@ -190,8 +190,8 @@ class BookServiceTest {
 		BookDto actual = bookService.getBookById(book.getId());
 
 		assertThat(actual).isEqualTo(bookDto);
-		verify(bookRepository, times(1)).findById(book.getId());
-		verify(bookMapper, times(1)).toDto(book);
+		verify(bookRepository).findById(book.getId());
+		verify(bookMapper).toDto(book);
 		verifyNoMoreInteractions(bookRepository,  bookMapper);
 	}
 
@@ -212,7 +212,7 @@ class BookServiceTest {
 		);
 
 		assertThat(exception.getMessage()).isEqualTo(expected);
-		verify(bookRepository, times(1)).findById(bookId);
+		verify(bookRepository).findById(bookId);
 		verifyNoMoreInteractions(bookRepository);
 	}
 
@@ -271,10 +271,10 @@ class BookServiceTest {
 		BookDto actual = bookService.updateBook(book.getId(), requestDto);
 
 		assertThat(actual.getAuthor()).isEqualTo(requestDto.getAuthor());
-		verify(bookRepository, times(1)).findById(book.getId());
-		verify(bookMapper, times(1)).updateBookFromDto(requestDto, book);
-		verify(bookMapper, times(1)).toDto(book);
-		verify(bookRepository, times(1)).save(book);
+		verify(bookRepository).findById(book.getId());
+		verify(bookMapper).updateBookFromDto(requestDto, book);
+		verify(bookMapper).toDto(book);
+		verify(bookRepository).save(book);
 		verifyNoMoreInteractions(bookRepository,  bookMapper);
 	}
 
@@ -304,7 +304,7 @@ class BookServiceTest {
 		);
 
 		assertThat(exception.getMessage()).isEqualTo(expected);
-		verify(bookRepository, times(1)).findById(bookId);
+		verify(bookRepository).findById(bookId);
 		verifyNoMoreInteractions(bookRepository,  bookMapper);
 	}
 
@@ -347,7 +347,7 @@ class BookServiceTest {
 
 		assertThat(actual.getContent().size()).isEqualTo(1);
 		assertThat(actual.getContent().get(0).getTitle()).isEqualTo(book1.getTitle());
-		verify(bookRepository, times(1)).findAll(specificationBuilder, pageable);
+		verify(bookRepository).findAll(specificationBuilder, pageable);
 		verifyNoMoreInteractions(bookRepository,  bookMapper);
 	}
 
@@ -394,9 +394,9 @@ class BookServiceTest {
 
 		assertThat(actual.getContent().size()).isEqualTo(1);
 		assertThat(actual.getContent().get(0).getTitle()).isEqualTo(book.getTitle());
-		verify(bookRepository, times(1)).findAllBooksByCategories_Id(categoryResponseDto.getId(), pageable);
-		verify(bookMapper, times(1)).toDto(book);
-		verify(categoryService, times(1)).findCategoryById(categoryResponseDto.getId());
+		verify(bookRepository).findAllBooksByCategories_Id(categoryResponseDto.getId(), pageable);
+		verify(bookMapper).toDto(book);
+		verify(categoryService).findCategoryById(categoryResponseDto.getId());
 		verifyNoMoreInteractions(bookRepository,  bookMapper, categoryService);
 	}
 
@@ -420,5 +420,4 @@ class BookServiceTest {
 
 		assertThat(exception.getMessage()).isEqualTo(expectedMessage);
 	}
-
 }

@@ -203,7 +203,7 @@ public class CategoryServiceTest {
         );
 
         assertThat(exception.getMessage()).isEqualTo(expected);
-        verify(categoryRepository, times(1)).findById(categoryId);
+        verify(categoryRepository).findById(categoryId);
         verifyNoMoreInteractions(categoryRepository);
     }
 
@@ -242,10 +242,10 @@ public class CategoryServiceTest {
         Page<CategoryResponseDto> categoryResponseDtoPage = categoryService.findAllCategories(pageable);
 
         assertThat(categoryPage.getContent().size()).isEqualTo(2);
-        assertThat(categoryPage.getContent().get(0).getName()).isEqualTo(categoryResponseDto1.getName());
-        verify(categoryMapper, times(1)).toResponseDto(category1);
-        verify(categoryMapper, times(1)).toResponseDto(category2);
-        verify(categoryRepository, times(1)).findAll(pageable);
+        assertThat(categoryPage.getContent().get(0).getName()).isEqualTo(categoryResponseDtoPage.getContent().get(0).getName());
+        verify(categoryMapper).toResponseDto(category1);
+        verify(categoryMapper).toResponseDto(category2);
+        verify(categoryRepository).findAll(pageable);
         verifyNoMoreInteractions(categoryRepository,  categoryMapper);
     }
 
@@ -270,8 +270,8 @@ public class CategoryServiceTest {
         CategoryResponseDto actual = categoryService.getCategoryById(category.getId());
 
         assertThat(actual).isEqualTo(categoryResponseDto);
-        verify(categoryMapper, times(1)).toResponseDto(category);
-        verify(categoryRepository, times(1)).findById(category.getId());
+        verify(categoryMapper).toResponseDto(category);
+        verify(categoryRepository).findById(category.getId());
         verifyNoMoreInteractions(categoryRepository,  categoryMapper);
     }
 
@@ -292,7 +292,7 @@ public class CategoryServiceTest {
         );
 
         assertThat(exception.getMessage()).isEqualTo(expected);
-        verify(categoryRepository, times(1)).findById(categoryId);
+        verify(categoryRepository).findById(categoryId);
         verifyNoMoreInteractions(categoryRepository);
     }
 }
