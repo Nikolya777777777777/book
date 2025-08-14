@@ -26,7 +26,6 @@ import org.testcontainers.shaded.org.apache.commons.lang3.builder.EqualsBuilder;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -87,10 +86,13 @@ public class CategoryControllerTest {
                 result.getResponse().getContentAsString(), type
         );
 
+        expected.getContent().get(0).setPrice(expected.getContent().get(0).getPrice().setScale(2));
+        actual.content.get(0).setPrice(actual.content.get(0).getPrice().setScale(2));
+
         assertNotNull(actual);
         assertFalse(actual.content.isEmpty());
         assertEquals(expected.getTotalElements(), actual.totalElements);
-        assertEquals(expected.getContent().get(0).getId(), actual.content.get(0).getId());
+        assertTrue(EqualsBuilder.reflectionEquals(expected.getContent().get(0), actual.content.get(0)));
     }
 
     @Test
@@ -153,7 +155,7 @@ public class CategoryControllerTest {
 
         assertNotNull(actual);
         assertEquals(expected.getTotalElements(), actual.totalElements);
-        assertEquals(expected.getContent().get(0).getId(), actual.content.get(0).getId());
+        assertTrue(EqualsBuilder.reflectionEquals(expected.getContent().get(0), actual.content.get(0)));
     }
 
     @Test

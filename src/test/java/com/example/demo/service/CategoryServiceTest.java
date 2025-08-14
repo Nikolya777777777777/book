@@ -17,10 +17,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.testcontainers.shaded.org.apache.commons.lang3.builder.EqualsBuilder;
+
 import java.util.List;
 import java.util.Optional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
@@ -53,17 +56,17 @@ public class CategoryServiceTest {
                .setId(1L)
                .setDescription("Interesting satisfaction stories about spies and good boys");
 
-        when(categoryMapper.toEntity(categoryRequestDto)).thenReturn(category);
-        when(categoryRepository.save(category)).thenReturn(category);
-        when(categoryMapper.toResponseDto(category)).thenReturn(categoryResponseDto);
+       when(categoryMapper.toEntity(categoryRequestDto)).thenReturn(category);
+       when(categoryRepository.save(category)).thenReturn(category);
+       when(categoryMapper.toResponseDto(category)).thenReturn(categoryResponseDto);
 
-        CategoryResponseDto responseDto = categoryService.createCategory(categoryRequestDto);
+       CategoryResponseDto responseDto = categoryService.createCategory(categoryRequestDto);
 
-        assertThat(responseDto.getName()).isEqualTo(category.getName());
-        verify(categoryMapper).toEntity(categoryRequestDto);
-        verify(categoryMapper).toResponseDto(category);
-        verify(categoryRepository).save(category);
-        verifyNoMoreInteractions(categoryRepository,  categoryMapper);
+       assertTrue(EqualsBuilder.reflectionEquals(responseDto, categoryResponseDto));
+       verify(categoryMapper).toEntity(categoryRequestDto);
+       verify(categoryMapper).toResponseDto(category);
+       verify(categoryRepository).save(category);
+       verifyNoMoreInteractions(categoryRepository,  categoryMapper);
     }
 
     @Test
@@ -86,7 +89,7 @@ public class CategoryServiceTest {
 
         CategoryResponseDto responseDto = categoryService.findCategoryById(category.getId());
 
-        assertThat(responseDto.getName()).isEqualTo(category.getName());
+        assertTrue(EqualsBuilder.reflectionEquals(responseDto, categoryResponseDto));
         verify(categoryMapper).toResponseDto(category);
         verify(categoryRepository).findById(category.getId());
         verifyNoMoreInteractions(categoryRepository,  categoryMapper);
@@ -138,7 +141,7 @@ public class CategoryServiceTest {
 
         CategoryResponseDto responseDto = categoryService.updateCategory(category.getId(), categoryRequestDto);
 
-        assertThat(responseDto.getName()).isEqualTo(categoryRequestDto.getName());
+        assertTrue(EqualsBuilder.reflectionEquals(responseDto, categoryResponseDto));
         verify(categoryMapper).toResponseDto(category);
         verify(categoryMapper).updateCategoryFromDb(categoryRequestDto, category);
         verify(categoryRepository).findById(category.getId());
@@ -234,6 +237,7 @@ public class CategoryServiceTest {
 
         Pageable pageable = PageRequest.of(0, 10);
         Page<Category> categoryPage = new PageImpl<>(List.of(category1, category2), pageable, 2);
+        Page<CategoryResponseDto> expected = new PageImpl<>(List.of(categoryResponseDto1, categoryResponseDto2), pageable, 2);
 
         when(categoryMapper.toResponseDto(category1)).thenReturn(categoryResponseDto1);
         when(categoryMapper.toResponseDto(category2)).thenReturn(categoryResponseDto2);
@@ -242,7 +246,8 @@ public class CategoryServiceTest {
         Page<CategoryResponseDto> categoryResponseDtoPage = categoryService.findAllCategories(pageable);
 
         assertThat(categoryPage.getContent().size()).isEqualTo(2);
-        assertThat(categoryPage.getContent().get(0).getName()).isEqualTo(categoryResponseDtoPage.getContent().get(0).getName());
+        assertTrue(EqualsBuilder.reflectionEquals(expected.getContent().get(0), categoryResponseDtoPage.getContent().get(0)));
+        assertTrue(EqualsBuilder.reflectionEquals(expected.getContent().get(1), categoryResponseDtoPage.getContent().get(1)));
         verify(categoryMapper).toResponseDto(category1);
         verify(categoryMapper).toResponseDto(category2);
         verify(categoryRepository).findAll(pageable);
@@ -269,7 +274,7 @@ public class CategoryServiceTest {
 
         CategoryResponseDto actual = categoryService.getCategoryById(category.getId());
 
-        assertThat(actual).isEqualTo(categoryResponseDto);
+        assertTrue(EqualsBuilder.reflectionEquals(actual, categoryResponseDto));
         verify(categoryMapper).toResponseDto(category);
         verify(categoryRepository).findById(category.getId());
         verifyNoMoreInteractions(categoryRepository,  categoryMapper);

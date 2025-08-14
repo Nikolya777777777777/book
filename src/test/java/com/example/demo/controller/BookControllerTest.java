@@ -82,9 +82,11 @@ public class BookControllerTest {
                 result.getResponse().getContentAsString(), type
         );
 
+        expected.getContent().get(0).setPrice(expected.getContent().get(0).getPrice().setScale(2));
+        actual.content.get(0).setPrice(actual.content.get(0).getPrice().setScale(2));
         assertNotNull(actual);
         assertEquals(expected.getTotalElements(), actual.totalElements);
-        assertEquals(expected.getContent().get(0).getId(), actual.content.get(0).getId());
+        assertTrue(EqualsBuilder.reflectionEquals(expected.getContent().get(0), actual.content.get(0)));
     }
 
     @Test
@@ -116,6 +118,8 @@ public class BookControllerTest {
 
         BookDto actual = objectMapper.readValue(result.getResponse().getContentAsString(), BookDto.class);
 
+        expected.setPrice(expected.getPrice().setScale(2));
+        actual.setPrice(actual.getPrice().setScale(2));
         assertNotNull(actual);
         assertTrue(EqualsBuilder.reflectionEquals(expected, actual));
     }
@@ -139,7 +143,7 @@ public class BookControllerTest {
                 .setCoverImage("blue");
 
         BookDto expected = new BookDto()
-                .setId(100L)
+                .setId(1L)
                 .setAuthor("Shevchenko")
                 .setTitle("Maria")
                 .setIsbn("123-456-7890")
@@ -158,7 +162,7 @@ public class BookControllerTest {
         BookDto actual = objectMapper.readValue(result.getResponse().getContentAsString(), BookDto.class);
         assertNotNull(actual);
         assertNotNull(actual.getId());
-        assertTrue(EqualsBuilder.reflectionEquals(expected, actual, "id"));
+        assertTrue(EqualsBuilder.reflectionEquals(expected, actual));
     }
 
     @Test
@@ -257,9 +261,12 @@ public class BookControllerTest {
                 result.getResponse().getContentAsString(), type
         );
 
+        expected.getContent().get(0).setPrice(expected.getContent().get(0).getPrice().setScale(2));
+        actual.content.get(0).setPrice(actual.content.get(0).getPrice().setScale(2));
+
         assertNotNull(actual);
         assertEquals(expected.getTotalElements(), actual.totalElements);
-        assertEquals(expected.getContent().get(0).getId(), actual.content.get(0).getId());
+        assertTrue(EqualsBuilder.reflectionEquals(expected.getContent().get(0), actual.content.get(0)));
     }
 
     public static class PageResponse<T> {
