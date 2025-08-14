@@ -86,8 +86,19 @@ and remember that if you send request to add, delete, update your user need to h
 3) GET request - http://localhost:8082/api/categories/1/books - you will get all books by category id(in url category id = 1)
 3.Order
 1) POST request - http://localhost:8082/api/orders - you need also send body with params in json and then you will get order which was saved to database 
-2) http://localhost:8082/api/orders
-3) 
+2) GET request - http://localhost:8082/api/orders - you will get all Users orders
+3) PATCH request - http://localhost:8082/api/orders/16 - you need to send body with params in json and then you will get updated category which was updated in database
+4) GET request - http://localhost:8082/api/orders/16/items - you will get all items in Order by order id (in url order id = 16)
+5) GET request - http://localhost:8082/api/orders/16/items/7 - you will get all order items in order by order id and item id (in url order id = 16, item id = 7)
+4.ShoppingCart
+1) GET request - http://localhost:8082/api/cart - you will get shopping cart for user
+2) POST request - http://localhost:8082/api/cart - you need to send body with params in json and then you will get shopping cart which was saved to database
+3) PUT request - http://localhost:8082/api/cart/items/2 - you need to send body with params in json and then you will get updated shopping cart which was updated in database
+4) DELETE request - http://localhost:8082/api/cart/items/2 - you will delete cart item in shopping cart by id(in url id = 2)
+5.User
+1) POST request - http://localhost:8082/api/auth/registration - you need to send body with params in json and then you will get user which was saved to database
+2) POST request - http://localhost:8083/api/auth/login - you need to send credentials for login(username and password) and then you will get jwt token which you need to send all requests
+
 ```mermaid
 flowchart TD
     A[Client] -->|POST /auth/login| B[Auth Controller]
