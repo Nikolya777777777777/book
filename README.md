@@ -81,9 +81,13 @@ and remember that if you send request to add, delete, update your user need to h
 7) GET request - http://localhost:8082/api/books?page=0&size=5&sort=price,desc - you will get all books by given params about page in url
 8) GET request - http://localhost:8082/api/categories/1/books - you will get All books which have the same category id as given in url(in url id = 1)
 2.Category
-1) POST request - http://localhost:8082/api/categories - 
-2) http://localhost:8082/api/categories/1
-3) http://localhost:8082/api/categories/1/books
+1) POST request - http://localhost:8082/api/categories - you need also send body with params in json and then you will get category which was saved to database
+2) GET request - http://localhost:8082/api/categories/1 - you will get category by id(in url id = 1)
+3) GET request - http://localhost:8082/api/categories/1/books - you will get all books by category id(in url category id = 1)
+3.Order
+1) POST request - http://localhost:8082/api/orders - you need also send body with params in json and then you will get order which was saved to database 
+2) http://localhost:8082/api/orders
+3) 
 ```mermaid
 flowchart TD
     A[Client] -->|POST /auth/login| B[Auth Controller]
