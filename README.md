@@ -4,18 +4,21 @@
 2. Fill in the values in `.env`.
 3. Start application: docker-compose up --build
 
-I'm interested in reading books and so I decided to create a book store as a Spring project. Now it is working shop, but without front-end where 
-admins can create new categories and add books, users can make an order and can save books they want to order in shopping cart and a lot of other usefully features.
+## Table of Contents
+1. Project Overview
+2. Technologies Used
+3. Models and Relations
+4. Project Structure
+5. Getting Started (Local Run)
+6. Challenges
+7. Postman Collections
+8. Swagger
+9. Contacts
 
-## Features I used in my project 
-- **Category Management** – CRUD operations for categories with soft delete support.
-- **Book Management** – CRUD operations for books, with category assignments.
-- **User Roles** – Basic authentication and role-based access (`USER`, `ADMIN`).
-- **Bearer Token Authentication** – All protected endpoints require a valid JWT token.
-- **Pagination & Sorting** – For listing large datasets efficiently.
-- **API Documentation** – Interactive Swagger UI.
-- **Database Migrations** – Managed with Liquibase.
-- **Integration & Unit Tests** – Ensuring stability and correctness.
+## Project Overview
+This project is an online bookstore built with Spring Boot.  
+It allows administrators to manage categories and books, and users to browse, add books to their cart, place orders, and manage their profile.  
+The application uses JWT authentication for security, supports pagination and sorting, and provides an interactive API documentation via Swagger.
 
 ## Technologies Used
 
@@ -29,13 +32,31 @@ admins can create new categories and add books, users can make an order and can 
 - **Maven**
 - **MySQL**
 
-## How you can set up and run my project
-1) Clone the repository
+## Models and Relations
+- Book (Many-to-Many with Category)
+- CartItem(Many-to-One with ShoppingCart, Many-to-One with Book)
+- Category (Many-to-Many with Book)
+- Order (One-to-Many with OrderItem, Many-to-One with User)
+- OrderItem (Many-to-One with Order)
+- ShoppingCart (One-to-Many with CartItem, One-to-one with User)
+- User (Many-to-Many with Role, One-to-Many with Order, One-to-One with ShoppingCart)
 
+## Features I used in my project
+- **Category Management** – CRUD operations for categories with soft delete support.
+- **Book Management** – CRUD operations for books, with category assignments.
+- **User Roles** – Basic authentication and role-based access (`USER`, `ADMIN`).
+- **Bearer Token Authentication** – All protected endpoints require a valid JWT token.
+- **Pagination & Sorting** – For listing large datasets efficiently.
+- **API Documentation** – Interactive Swagger UI.
+- **Database Migrations** – Managed with Liquibase.
+- **Integration & Unit Tests** – Ensuring stability and correctness.
+
+## Getting Started (Local Run)
+1) Clone the repository
 git clone https://github.com/your-username/your-repo-name.git
 cd your-repo-name
 
-2) Configure the database 
+2) Configure the database
    Update src/main/resources/application.properties with your database credentials:
 
 spring.datasource.url=jdbc:mysql://localhost:3306/bookstore
@@ -56,7 +77,7 @@ Swagger UI: http://localhost:8080/swagger-ui/index.html
 Secured endpoints require a valid Bearer Token in the Authorization header:
 Authorization: Bearer <your_token>
 
-## Changes I faced during this project and how I overcame them
+## Changes
 1) Database migration conflicts – Initially, some Mysql changesets caused inconsistencies between environments. 
 This was solved by splitting migrations into smaller, atomic files and enforcing version control for changelogs.
 And also I had problems with foreign and primary keys.
@@ -67,7 +88,7 @@ And also I had problems with foreign and primary keys.
 
 4) Testing - I had problems with dropping and creating tables in database, but I solved this with excluding keys and truncating all tables.
 
-Collection of Postman requests
+## Postman Collections
 In each request you need to use Authentication through Bearer token, so before each request login into system 
 and remember that this token is valid for 5 minutes then you will need to re-login in order to get new token 
 and remember that if you send request to add, delete, update your user need to have role Admin 
@@ -99,14 +120,11 @@ and remember that if you send request to add, delete, update your user need to h
 1) POST request - http://localhost:8082/api/auth/registration - you need to send body with params in json and then you will get user which was saved to database
 2) POST request - http://localhost:8083/api/auth/login - you need to send credentials for login(username and password) and then you will get jwt token which you need to send all requests
 
-```mermaid
-flowchart TD
-    A[Client] -->|POST /auth/login| B[Auth Controller]
-    B -->|Verify credentials| C[User Service]
-    C -->|Generate JWT| D[Return Bearer Token]
-    A -->|Request with Bearer Token| E[Protected Endpoint]
-    E -->|JWT Validation| F[Security Filter]
-    F -->|Authorized| G[Controller Method]
-    G -->|Business Logic| H[Service Layer]
-    H -->|Data Access| I[Repository / DB]
-    I -->|Response| A
+## Swagger
+The API is documented using Swagger/OpenAPI and is available at:
+- `http://localhost:8082/swagger-ui/index.html`
+
+## Contacts
+- Author: Mykola
+- Email: nikolya.cr@email.com
+- GitHub: [Nikolya777777777777](https://github.com/Nikolya777777777777)
