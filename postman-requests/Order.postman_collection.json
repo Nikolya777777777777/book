@@ -1,0 +1,184 @@
+{
+	"info": {
+		"_postman_id": "43c35d0a-434d-48d1-acd4-5a5571758291",
+		"name": "Order",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "44500511",
+		"_collection_link": "https://mykola-2085682.postman.co/workspace/Mykola's-Workspace~1a7b0300-57ed-43a8-88a7-8178c795b70b/collection/44500511-43c35d0a-434d-48d1-acd4-5a5571758291?action=share&source=collection_link&creator=44500511"
+	},
+	"item": [
+		{
+			"name": "createOrderById",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJuaWtvbHlhMkBnbWFpbC5jb20iLCJpYXQiOjE3NTM3MDA3NjUsImV4cCI6MTc1MzcwMTA2NX0.jwKZI7E6xrNSge0PPypIDvACn4oQBA-l3rHu5Gu2X9jTw6OaiV6UnMu8h_e7BoRX",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"shippingAddress\": \"Emfbfhdbfhjdbfjhdbhjfb\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8082/api/orders",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAllUserOrders",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJuaWtvbHlhM0BnbWFpbC5jb20iLCJpYXQiOjE3NTM1MjY1NzIsImV4cCI6MTc1MzUyNjg3Mn0.bgs_oMT1GeFFe0y1nCeRwbQJ357InX2vxPcsLOIz5IXpmgzFk3dsaMVJMoxuNSCI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8082/api/orders",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateOrderStatus",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJuaWtvbHlhM0BnbWFpbC5jb20iLCJpYXQiOjE3NTM1Mjg1MzUsImV4cCI6MTc1MzUyODgzNX0.0d54xp9CvJOBbGQhDaQLAoc81gr7P5PIm30rUJcbv-74FwLwv-UH3jcoxqOyCalz",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"status\": \"DELIVERED\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8082/api/orders/11",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"orders",
+						"11"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAllItemsInOrder",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJuaWtvbHlhQGdtYWlsLmNvbSIsImlhdCI6MTc1Mzk0ODAzNywiZXhwIjoxNzUzOTQ4MzM3fQ.629h-Mr31dP3Tg6kaB0OfWJzMDWoMunvI5WRvZc9ld3W7vGw01pIzaxQkRp9wrF9",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8082/api/orders/16/items",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"orders",
+						"16",
+						"items"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getOrderItemInOrderById",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJuaWtvbHlhQGdtYWlsLmNvbSIsImlhdCI6MTc1Mzk0ODAzNywiZXhwIjoxNzUzOTQ4MzM3fQ.629h-Mr31dP3Tg6kaB0OfWJzMDWoMunvI5WRvZc9ld3W7vGw01pIzaxQkRp9wrF9",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8082/api/orders/16/items",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"orders",
+						"16",
+						"items"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
