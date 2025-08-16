@@ -39,6 +39,7 @@ public class BookController {
             @ApiResponse(responseCode = "403", description = "User is not authenticated"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping
     public Page<BookDto> getAll(Pageable pageable) {
         return bookService.getAll(pageable);
@@ -100,6 +101,7 @@ public class BookController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Books matching search criteria")
     })
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/search")
     public Page<BookDto> searchBooks(@Valid BookSearchParametersDto searchParameters,
                                      Pageable pageable) {

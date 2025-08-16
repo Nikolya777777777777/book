@@ -43,6 +43,7 @@ public class CategoryController {
             @ApiResponse(responseCode = "404", description = "Category not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{id}/books")
     public Page<BookDto> getAllBooksByCategoryId(@PathVariable Long id, Pageable pageable) {
         return bookService.findAllBooksByCategoryId(id, pageable);
@@ -56,6 +57,7 @@ public class CategoryController {
             @ApiResponse(responseCode = "404", description = "Category not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{id}")
     public CategoryResponseDto getCategoryById(@PathVariable Long id) {
         return categoryService.getCategoryById(id);
@@ -69,6 +71,7 @@ public class CategoryController {
                             = CategoryResponseDto.class)))),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping
     public Page<CategoryResponseDto> getAllCategories(Pageable pageable) {
         return categoryService.findAllCategories(pageable);
@@ -104,6 +107,7 @@ public class CategoryController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{id}")
     public CategoryResponseDto updateCategory(@PathVariable Long id, @RequestBody
                                                   @Valid CategoryRequestDto categoryRequestDto) {
