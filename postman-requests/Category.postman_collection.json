@@ -1,0 +1,89 @@
+{
+	"info": {
+		"_postman_id": "dce1b7f9-c01d-482d-89a3-f83c67fa9c17",
+		"name": "Category",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "44500511",
+		"_collection_link": "https://mykola-2085682.postman.co/workspace/Mykola's-Workspace~1a7b0300-57ed-43a8-88a7-8178c795b70b/collection/44500511-dce1b7f9-c01d-482d-89a3-f83c67fa9c17?action=share&source=collection_link&creator=44500511"
+	},
+	"item": [
+		{
+			"name": "createCategory",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ2aWthQGdtYWlsLmNvbSIsImlhdCI6MTc1MjMyMDMyMiwiZXhwIjoxNzUyMzIwNjIyfQ.WtKRKvO43-RPwIDSxsyIKgx3tR_pZNycmVTmKPkJ5qtyy1aF1dsjzI-sTHqH_Fwc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"detective\",\r\n    \"description\": \"spy should be found\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8082/api/categories",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"categories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getCategoryById",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbjNAZ21haWwuY29tIiwiaWF0IjoxNzUzMTA1MTUxLCJleHAiOjE3NTMxMDU0NTF9.ZQ-nzSjpQ3HpoXhyyVGbwvP8SOLBFLgOO4LajdDKbj5upAeftDq2cp-yon1KDADP",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8082/api/categories/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"categories",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAllBooksByCategoryId",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}
